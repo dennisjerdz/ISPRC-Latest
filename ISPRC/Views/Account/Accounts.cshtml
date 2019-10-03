@@ -1,0 +1,93 @@
+﻿@model IEnumerable<ISPRC.Models.AdminAccountModel>
+@{
+    ViewBag.Title = "Index";
+}
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="marginTop40">Accounts&emsp;>&emsp;<a href="@Url.Action("AddClubOwner")">Add Club Owner</a></h3>
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-condensed table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Role
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.Email
+                        </td>
+                        <td>
+                            @item.Role
+                        </td>
+                        <td>
+                            @if (item.Locked)
+                            {
+                                <span style="color:#b02f2f;">Locked</span>
+                            }else
+                            {
+                                <span style="color:#00ff21;">Active</span>
+                            }
+                        </td>
+                        <td>
+                            @if (User.Identity.Name == item.Email)
+                            {
+
+                            }
+                            else
+                            {
+                                if (item.Locked)
+                                {
+                                    <a href="@Url.Action("Unlock",new { id=item.Id })" class="btn btn-xs btn-success">Unlock</a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Lock",new { id=item.Id })" class="btn btn-xs btn-danger">Lock</a>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var datatable = $("table").DataTable({
+                paging: true,
+                "pageLength": 10,
+                "dom": "<'table-window'<'table-responsive'rt>><'window-footer'<'col-md-6'i><'col-md-6'p>>",
+                "columnDefs": [
+                    { "orderable": false, "targets": 4 }
+                ]
+            });
+
+            $(".all-search").keyup(function () {
+                datatable.search($(this).val()).draw();
+            })
+        });
+    </script>
+}

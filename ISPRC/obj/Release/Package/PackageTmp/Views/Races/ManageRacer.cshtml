@@ -1,0 +1,238 @@
+﻿@model ISPRC.Models.BirdRace
+
+@{
+    ViewBag.Title = "Create";
+}
+@{
+// Layout = "";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="marginTop40"><a href="@Url.Action("Racers")">Racers</a>&emsp;>&emsp;Manage Racer</h3>
+        <hr />
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-5">
+        <h5>Choose Destination</h5>
+        <div id="map" style="height:400px; width:100%;"></div>
+    </div>
+
+    <div class="col-md-7">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(r=> r.BirdCode)
+            @Html.HiddenFor(r=> r.DateCreated)
+            @Html.HiddenFor(r=> r.RaceId)
+            @Html.HiddenFor(r => r.BirdRaceId)
+            @Html.HiddenFor(r => r.BirdId)
+            @Html.HiddenFor(r => r.Speed)
+            @Html.HiddenFor(r => r.ArrivalDate)
+
+            <br />
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label class="control-label">Band Number</label>
+                        &emsp; @Model.Bird.BirdName
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-6">
+                        @Html.LabelFor(model => model.ArrivalDate, htmlAttributes: new { @class = "control-label" })
+                        @if (Model.ArrivalDate != null)
+                        {
+                            @Html.EditorFor(model => model.ArrivalDate, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local", @readonly = "true" } })
+                        }
+                        else
+                        {
+                            <input class="form-control" value="Pending" readonly/>
+                        }
+                        
+                        @Html.ValidationMessageFor(model => model.ArrivalDate, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(model => model.ReleaseDate, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.ReleaseDate, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local" } })
+                        @Html.ValidationMessageFor(model => model.ReleaseDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label class="control-label">Origin Latitude</label>
+                        <input class="form-control" value="@Model.Race.RaceLatitudeCoordinate" readonly/>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="control-label">Origin Longitude</label>
+                        <input class="form-control" value="@Model.Race.RaceLongitudeCoordinate" readonly />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-6">
+                        @Html.LabelFor(model => model.EndLatitude, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.EndLatitude, new { htmlAttributes = new { @class = "form-control latitude" } })
+                        @Html.ValidationMessageFor(model => model.EndLatitude, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(model => model.EndLongitude, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.EndLongitude, new { htmlAttributes = new { @class = "form-control longitude" } })
+                        @Html.ValidationMessageFor(model => model.EndLongitude, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label class="control-label">Distance (meters):</label>
+                        @Html.EditorFor(model => model.Distance, new { htmlAttributes = new { @class = "form-control distance" } })
+                        @Html.ValidationMessageFor(model => model.Distance, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-6">
+                        <br />
+                        <input type="submit" value="Save" class="btn btn-primary btn-block" />
+                    </div>
+                </div>
+            </div>
+
+            <div id="qrcode"></div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        /*
+            REFERENCE: Distance from 2 markers, maps api
+            https://ourcodeworld.com/articles/read/1021/how-to-calculate-the-distance-between-2-markers-coordinates-in-google-maps-with-javascript
+        */
+
+        var map;
+        var markers = [];
+        var infowindow;
+        var marker;
+        var originMarker;
+
+        /*
+        $(".latitude").keyup(function () {
+            addMarker( {lat:$(".latitude").val(),lang:$(".longitude").val()});
+        });
+
+        $(".longitude").keyup(function () {
+            addMarker({ lat: $(".latitude").val(), lang: $(".longitude").val() });
+        });
+        */
+        var editLatLng = { lat: @Model.Race.RaceLatitudeCoordinate, lng: @Model.Race.RaceLongitudeCoordinate };
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 14.599512, lng: 120.984222 },
+                zoom: 9
+            });
+
+            addOriginMarker(editLatLng);
+
+            map.addListener('click', function (event) {
+                clearMarkers();
+                $(".latitude").val(event.latLng.lat);
+                $(".longitude").val(event.latLng.lng);
+                addMarker(event.latLng);
+
+                console.log(event.latLng);
+
+                var distanceInMeters = google.maps.geometry.spherical.computeDistanceBetween(originMarker.getPosition(),marker.getPosition());
+                
+                $(".distance").val(distanceInMeters);
+            });
+        }
+
+        function addMarker(location) {
+            marker = new google.maps.Marker({
+                position: location,
+                map: map
+            });
+            markers.push(marker);
+
+            marker['infowindow'] = new google.maps.InfoWindow({
+                content: "<div>Destination<br>" + $(".latitude").val() + "," + $(".longitude").val() + "</div>"
+            });
+
+            google.maps.event.addListener(marker, 'mouseover', function () {
+                this['infowindow'].open(map, this);
+            });
+
+            /*console.log(marker);
+            console.log(originMarker);
+
+            var line = new google.maps.Polyline({
+                path: [
+                    marker.position, 
+                    originMarker
+                ],
+                strokeColor: "#FF0000",
+                strokeOpacity: 1.0,
+                strokeWeight: 10,
+                map: map
+            });*/
+        }
+
+        function addOriginMarker(location) {
+            originMarker = new google.maps.Marker({
+                position: location,
+                map: map
+            });
+            markers.push(originMarker);
+
+            originMarker['infowindow'] = new google.maps.InfoWindow({
+                content: "<div>Origin<br>" + @Model.Race.RaceLatitudeCoordinate + "," + @Model.Race.RaceLongitudeCoordinate + "</div>"
+            });
+
+            google.maps.event.addListener(originMarker, 'mouseover', function () {
+                this['infowindow'].open(map, this);
+            });
+        }
+
+        function setMapOnAll(map) {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(map);
+            }
+        }
+
+        function clearMarkers() {
+            setMapOnAll(null);
+
+            // add origin marker
+            addOriginMarker(editLatLng);
+        }
+    </script>
+
+    <script src="~/Content/qrcode.min.js"></script>
+
+    <script type="text/javascript">
+        var qrcode = new QRCode("qrcode", {
+            text: "http://isprc.azurewebsites.net/Races/Arrive?code="+"@Model.BirdCode",
+            width: 128,
+            height: 128,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
+        // qrcode.clear(); // clear the code.
+        // qrcode.makeCode("http://naver.com"); // make another code.
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBk14L0DI_cIAX-EQFLP0uLIUZ00fopkGs&callback=initMap&libraries=geometry" async defer></script>
+}

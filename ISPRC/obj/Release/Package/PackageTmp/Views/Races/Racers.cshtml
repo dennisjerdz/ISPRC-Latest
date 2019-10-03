@@ -1,0 +1,126 @@
+﻿@model IEnumerable<ISPRC.Models.BirdRace>
+
+@{
+    ViewBag.Title = "Racers";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="marginTop40">Races&emsp;>&emsp;<a href="@Url.Action("Create")">Create Race</a></h3>
+        <hr />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-condensed table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Bird.BirdName)
+                    </th>
+                    <th>
+                        End Coordinates
+                    </th>
+                    <th>
+                        Distance from Start
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ReleaseDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ArrivalDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Speed)
+                    </th>
+                    <th>
+                        Date Joined
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Bird.BirdName)
+                        </td>
+                        <td>
+                            @if (item.EndLatitude != null && item.EndLongitude != null)
+                            {
+                                <span title="@item.EndLatitude , @item.EndLongitude">
+                                    @item.EndLatitude.Substring(0, 5) , @item.EndLongitude.Substring(0, 5)
+                                </span>
+                            }
+                            else
+                            {
+                                <text>Pending</text>
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Distance)
+                        </td>
+                        <td>
+                            @if (item.ReleaseDate != null)
+                {
+                                @item.ReleaseDate.Value.ToString("MM-dd-yyyy hh:mmt")
+                            }
+                            else
+                            {
+                                <text>Pending</text>
+                            }
+                        </td>
+                        <td>
+                            @if (item.ArrivalDate != null)
+                {
+                                @item.ArrivalDate.Value.ToString("MM-dd-yyyy hh:mmt")
+                            }
+                            else
+                            {
+                                <text>Pending</text>
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Speed)
+                        </td>
+                        <td>
+                            @item.DateCreated.ToString("MM-dd-yyyy hh:mmt")
+                        </td>
+                        <td>
+                            @if (User.IsInRole("Admin") || User.IsInRole("Club Owner"))
+                            {
+                                if (DateTime.UtcNow.AddHours(8) < item.Race.RaceCutOffDate)
+                                {
+                                    <a class="btn btn-primary btn-xs" href="@Url.Action("ManageRacer",new { id=item.BirdRaceId })">Edit</a>
+                                    <a class="btn btn-danger btn-xs" href="@Url.Action("RemoveRacer",new { id=item.BirdRaceId })">Delete</a>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var datatable = $("table").DataTable({
+                paging: true,
+                "pageLength": 10,
+                "dom": "<'table-window'<'table-responsive'rt>><'window-footer'<'col-md-6'i><'col-md-6'p>>",
+                "columnDefs": [
+                    { "orderable": false, "targets": 7 }
+                ]
+            });
+
+            $(".all-search").keyup(function () {
+                datatable.search($(this).val()).draw();
+            })
+        });
+    </script>
+}

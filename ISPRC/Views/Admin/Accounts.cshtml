@@ -1,0 +1,31 @@
+﻿@model List<ISPRC.Models.AdminAccountModel>
+
+@{
+    ViewBag.Title = "Accounts";
+}
+
+<h2>Accounts</h2>
+
+<div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th></th>
+                <th>Role</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach(var user in Model)
+            {
+                <tr>
+                    <td>@user.Email</td>
+
+                    <td>@user.Role</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

@@ -1,0 +1,123 @@
+﻿@model IEnumerable<ISPRC.Models.Race>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="marginTop40">Races&emsp;>&emsp;<a href="@Url.Action("Create")">Create Race</a></h3>
+        <hr />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-condensed table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Start
+                    </th>
+                    <th>
+                        End
+                    </th>
+                    <th>
+                        Created At
+                    </th>
+                    <th>
+                        Coordinates
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RaceName)
+                        </td>
+                        <td>
+                            @item.RaceStartDate.ToString("MM-dd-yyyy hh:mmt")
+                        </td>
+                        <td>
+                            @item.RaceCutOffDate.ToString("MM-dd-yyyy hh:mmt")
+                        </td>
+                        <td>
+                            @item.DateCreated.ToString("MM-dd-yyyy")
+                        </td>
+                        <td>
+                            <span title="@item.RaceLatitudeCoordinate , @item.RaceLongitudeCoordinate">
+                                @item.RaceLatitudeCoordinate.Substring(0, 5) , @item.RaceLongitudeCoordinate.Substring(0, 5)
+                            </span>
+                        </td>
+                        <td>
+                            @if (item.ForceRaceDone)
+                            {
+                                <span class="red">Ended</span>
+                            }else if (DateTime.UtcNow.AddHours(8) > item.RaceStartDate && DateTime.UtcNow.AddHours(8) < item.RaceCutOffDate)
+                            {
+                                <span class="blue">Started</span>
+                            }else if (DateTime.UtcNow.AddHours(8) > item.RaceCutOffDate)
+                            {
+                                <span class="green">Done</span>
+                            }else
+                            {
+                                <span class="gray">Pending</span>
+                            }
+                        </td>
+                        <td>
+                            @if (DateTime.UtcNow.AddHours(8) < item.RaceStartDate)
+                            {
+                                <a class="btn btn-success btn-xs" href="@Url.Action("Join", new { id=item.RaceId })">Join</a>
+                            }
+
+                            @if (User.IsInRole("Admin") || User.IsInRole("Club Owner"))
+                            {
+                                if (DateTime.UtcNow.AddHours(8) < item.RaceCutOffDate)
+                                {
+                                    <a class="btn btn-primary btn-xs" href="@Url.Action("Edit",new { id=item.RaceId })">Edit</a>
+                                    <a class="btn btn-danger btn-xs" href="@Url.Action("Delete",new { id=item.RaceId })">Delete</a>
+                                    <a class="btn btn-default btn-xs" href="@Url.Action("EndRace",new { id=item.RaceId })">End</a>
+                                    <a class="btn btn-warning btn-xs" href="@Url.Action("Racers",new { id=item.RaceId })">Racers</a>
+                                }
+                            }
+
+                            @if (DateTime.UtcNow.AddHours(8) > item.RaceCutOffDate)
+                            {
+                                <a class="btn btn-warning btn-xs" href="@Url.Action("Racers",new { id=item.RaceId })">Results</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var datatable = $("table").DataTable({
+                paging: true,
+                "pageLength": 10,
+                "dom": "<'table-window'<'table-responsive'rt>><'window-footer'<'col-md-6'i><'col-md-6'p>>",
+                "columnDefs": [
+                    { "orderable": false, "targets": 6 }
+                ]
+            });
+
+            $(".all-search").keyup(function () {
+                datatable.search($(this).val()).draw();
+            })
+        });
+    </script>    
+}

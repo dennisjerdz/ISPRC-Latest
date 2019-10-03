@@ -1,0 +1,79 @@
+﻿@model IEnumerable<ISPRC.Models.Bird>
+@{
+    ViewBag.Title = "Index";
+}
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="marginTop40">Racers&emsp;>&emsp;<a href="@Url.Action("Create")">Add Racer</a></h3>
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-condensed table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BirdName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DateCreated)
+                    </th>
+                    <th>
+                        Races Joined
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BirdName)
+                        </td>
+                        <td>
+                            @item.DateCreated.ToString("MM-dd-yyyy")
+                        </td>
+                        <td>
+                            @item.Races.Count
+                        </td>
+                        <td>
+                            <a class="btn btn-primary btn-xs" href="@Url.Action("Edit",new { id=item.BirdId })">Edit</a>
+                            
+                            @if (item.Races.Count() <= 0)
+                            {
+                                <a class="btn btn-danger btn-xs" href="@Url.Action("Delete",new { id=item.BirdId })">Delete</a>
+                            }
+                            
+                            @if (item.Races.Count() > 0)
+                            {
+                                <a class="btn btn-success btn-xs" href="@Url.Action("Statistics",new { id=item.BirdId })">Statistics</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var datatable = $("table").DataTable({
+                paging: true,
+                "pageLength": 10,
+                "dom": "<'table-window'<'table-responsive'rt>><'window-footer'<'col-md-6'i><'col-md-6'p>>",
+                "columnDefs": [
+                    { "orderable": false, "targets": 4 }
+                ]
+            });
+
+            $(".all-search").keyup(function () {
+                datatable.search($(this).val()).draw();
+            })
+        });
+    </script>
+}

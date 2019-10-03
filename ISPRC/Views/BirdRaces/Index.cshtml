@@ -1,0 +1,87 @@
+﻿@model IEnumerable<ISPRC.Models.BirdRace>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Bird.BirdName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Race.RaceName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndLatitude)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndLongitude)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReleaseDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ArrivalDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Speed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Distance)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BirdCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Bird.BirdName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Race.RaceName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EndLatitude)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EndLongitude)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReleaseDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ArrivalDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Speed)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Distance)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BirdCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateCreated)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.BirdRaceId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.BirdRaceId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.BirdRaceId })
+        </td>
+    </tr>
+}
+
+</table>
