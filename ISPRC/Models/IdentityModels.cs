@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using System.Security.Principal;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ISPRC.Models
 {
@@ -14,6 +15,11 @@ namespace ISPRC.Models
         public string GivenName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
+
+        public string Address { get; set; }
+        public string MobileNumber { get; set; }
+        public int? LoftLatitudeCoordinate { get; set; }
+        public int? LoftLongitudeCoordinate { get; set; }
 
         public virtual List<Bird> Birds { get; set; }
 
@@ -27,6 +33,10 @@ namespace ISPRC.Models
 
             return userIdentity;
         }
+        
+        public int? ClubId { get; set; }
+        [ForeignKey("ClubId")]
+        public Club Club { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -39,11 +49,14 @@ namespace ISPRC.Models
         public DbSet<Race> Races { get; set; }
         public DbSet<Bird> Birds { get; set; }
         public DbSet<BirdRace> BirdsRace { get; set; }
+        public DbSet<ReleasePoint> ReleasePoints { get; set; }
 
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<ISPRC.Models.Club> Clubs { get; set; }
     }
 
     /* supposedly custom claim

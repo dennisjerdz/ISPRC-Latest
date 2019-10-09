@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ISPRC.Models.ReleasePoint>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ReleasePointName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReleasePointCoordinates)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RaceLatitudeCoordinate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RaceLongitudeCoordinate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReleasePointName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReleasePointCoordinates)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RaceLatitudeCoordinate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RaceLongitudeCoordinate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateCreated)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ReleasePointId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ReleasePointId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ReleasePointId })
+        </td>
+    </tr>
+}
+
+</table>

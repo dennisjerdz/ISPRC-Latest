@@ -20,16 +20,16 @@
                         Name
                     </th>
                     <th>
+                        Loading Date
+                    </th>
+                    <th>
                         Start
                     </th>
                     <th>
                         End
                     </th>
                     <th>
-                        Created At
-                    </th>
-                    <th>
-                        Coordinates
+                        Release Point
                     </th>
                     <th>
                         Status
@@ -46,18 +46,37 @@
                             @Html.DisplayFor(modelItem => item.RaceName)
                         </td>
                         <td>
+                            @if (item.RaceLoadingDate != null)
+                            {
+                                <text>
+                                    @item.RaceLoadingDate.Value.ToString("MM-dd-yyyy hh:mmt")
+                                </text>
+                            }
+                            else
+                            {
+                                <text>Not set</text>
+                            }
+                        </td>
+                        <td>
                             @item.RaceStartDate.ToString("MM-dd-yyyy hh:mmt")
                         </td>
                         <td>
                             @item.RaceCutOffDate.ToString("MM-dd-yyyy hh:mmt")
                         </td>
                         <td>
-                            @item.DateCreated.ToString("MM-dd-yyyy")
-                        </td>
-                        <td>
+                            @*
                             <span title="@item.RaceLatitudeCoordinate , @item.RaceLongitudeCoordinate">
                                 @item.RaceLatitudeCoordinate.Substring(0, 5) , @item.RaceLongitudeCoordinate.Substring(0, 5)
                             </span>
+                            *@
+
+                            @if (item.ReleasePointId != null)
+                            {
+                                @item.ReleasePoint.ReleasePointName
+                            }else
+                            {
+                                <text>Not Set</text>
+                            }
                         </td>
                         <td>
                             @if (item.ForceRaceDone)
@@ -77,7 +96,10 @@
                         <td>
                             @if (DateTime.UtcNow.AddHours(8) < item.RaceStartDate)
                             {
-                                <a class="btn btn-success btn-xs" href="@Url.Action("Join", new { id=item.RaceId })">Join</a>
+                                if (!User.IsInRole("Club Owner"))
+                                {
+                                    <a class="btn btn-success btn-xs" href="@Url.Action("Join", new { id=item.RaceId })">Join</a>
+                                }
                             }
 
                             @if (User.IsInRole("Admin") || User.IsInRole("Club Owner"))

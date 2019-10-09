@@ -1,0 +1,145 @@
+﻿@model ISPRC.Models.ReleasePoint
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="marginTop40"><a href="@Url.Action("Index")">Release Points</a>&emsp;>&emsp;Add Release Point</h3>
+        <hr />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-5">
+        <h5>Choose Location</h5>
+        <div id="map" style="height:400px; width:100%;"></div>
+    </div>
+
+    <div class="col-md-7">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <br />
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.ReleasePointName, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.ReleasePointName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ReleasePointName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-6">
+                        @Html.LabelFor(model => model.RaceLatitudeCoordinate, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.RaceLatitudeCoordinate, new { htmlAttributes = new { @class = "form-control latitude" } })
+                        @Html.ValidationMessageFor(model => model.RaceLatitudeCoordinate, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(model => model.RaceLongitudeCoordinate, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.RaceLongitudeCoordinate, new { htmlAttributes = new { @class = "form-control longitude" } })
+                        @Html.ValidationMessageFor(model => model.RaceLongitudeCoordinate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-8 col-md-4">
+                        <br />
+                        <input type="submit" value="Add" class="btn btn-primary btn-block" />
+                    </div>
+                </div>
+            </div>
+
+            <!--<div id="qrcode"></div>-->
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        var map;
+        var markers = [];
+        var infowindow;
+        var marker;
+
+        /*
+        $(".latitude").keyup(function () {
+            addMarker( {lat:$(".latitude").val(),lang:$(".longitude").val()});
+        });
+
+        $(".longitude").keyup(function () {
+            addMarker({ lat: $(".latitude").val(), lang: $(".longitude").val() });
+        });
+        */
+
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 14.599512, lng: 120.984222 },
+                zoom: 9
+            });
+
+            map.addListener('click', function (event) {
+                clearMarkers();
+                markers = [];
+
+                $(".latitude").val(event.latLng.lat);
+                $(".longitude").val(event.latLng.lng);
+                addMarker(event.latLng);
+
+                console.log(event.latLng);
+            });
+        }
+
+        function addMarker(location) {
+            marker = new google.maps.Marker({
+                position: location,
+                map: map
+            });
+            markers.push(marker);
+
+            marker['infowindow'] = new google.maps.InfoWindow({
+                content: "<div>" + $(".latitude").val() + "," + $(".longitude").val() + "</div>"
+            });
+
+            google.maps.event.addListener(marker, 'mouseover', function () {
+                this['infowindow'].open(map, this);
+            });
+        }
+
+        function setMapOnAll(map) {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(map);
+            }
+        }
+
+        function clearMarkers() {
+            setMapOnAll(null);
+        }
+    </script>
+
+    <script src="~/Content/qrcode.min.js"></script>
+
+    <script type="text/javascript">
+        var qrcode = new QRCode("qrcode", {
+            text: "http://jindo.dev.naver.com/collie",
+            width: 128,
+            height: 128,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
+        // qrcode.clear(); // clear the code.
+        // qrcode.makeCode("http://naver.com"); // make another code.
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBk14L0DI_cIAX-EQFLP0uLIUZ00fopkGs&callback=initMap" async defer></script>
+}

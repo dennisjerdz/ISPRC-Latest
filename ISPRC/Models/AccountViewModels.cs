@@ -68,6 +68,12 @@ namespace ISPRC.Models
         public string MiddleName { get; set; }
         public string LastName { get; set; }
 
+        public int ClubId { get; set; }
+        public string Address { get; set; }
+        public string MobileNumber { get; set; }
+        public string LoftLatitudeCoordinate { get; set; }
+        public string LoftLongitudeCoordinate { get; set; }
+        
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

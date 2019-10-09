@@ -199,9 +199,11 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BirdRacesController.cs" />
     <Compile Include="Controllers\BirdsController.cs" />
+    <Compile Include="Controllers\ClubsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RacesController.cs" />
+    <Compile Include="Controllers\ReleasePointsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -224,6 +226,18 @@
     <Compile Include="Migrations\201909211403125_rename.cs" />
     <Compile Include="Migrations\201909211403125_rename.Designer.cs">
       <DependentUpon>201909211403125_rename.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910090553500_Release points, Clubs.cs" />
+    <Compile Include="Migrations\201910090553500_Release points, Clubs.Designer.cs">
+      <DependentUpon>201910090553500_Release points, Clubs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910090650022_Race Loading date and Description.cs" />
+    <Compile Include="Migrations\201910090650022_Race Loading date and Description.Designer.cs">
+      <DependentUpon>201910090650022_Race Loading date and Description.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910091332023_Club Id for Races.cs" />
+    <Compile Include="Migrations\201910091332023_Club Id for Races.Designer.cs">
+      <DependentUpon>201910091332023_Club Id for Races.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -329,6 +343,16 @@
     <Content Include="Views\Races\ManageRacer.cshtml" />
     <Content Include="Views\Account\Accounts.cshtml" />
     <Content Include="Views\Account\AddClubowner.cshtml" />
+    <Content Include="Views\ReleasePoints\Create.cshtml" />
+    <Content Include="Views\ReleasePoints\Delete.cshtml" />
+    <Content Include="Views\ReleasePoints\Details.cshtml" />
+    <Content Include="Views\ReleasePoints\Edit.cshtml" />
+    <Content Include="Views\ReleasePoints\Index.cshtml" />
+    <Content Include="Views\Clubs\Create.cshtml" />
+    <Content Include="Views\Clubs\Delete.cshtml" />
+    <Content Include="Views\Clubs\Details.cshtml" />
+    <Content Include="Views\Clubs\Edit.cshtml" />
+    <Content Include="Views\Clubs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -356,6 +380,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909211403125_rename.resx">
       <DependentUpon>201909211403125_rename.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910090553500_Release points, Clubs.resx">
+      <DependentUpon>201910090553500_Release points, Clubs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910090650022_Race Loading date and Description.resx">
+      <DependentUpon>201910090650022_Race Loading date and Description.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910091332023_Club Id for Races.resx">
+      <DependentUpon>201910091332023_Club Id for Races.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

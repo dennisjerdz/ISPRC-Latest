@@ -14,6 +14,9 @@
             <thead>
                 <tr>
                     <th>
+                        Club
+                    </th>
+                    <th>
                         Name
                     </th>
                     <th>
@@ -32,6 +35,9 @@
                 @foreach (var item in Model)
                 {
                     <tr>
+                        <td>
+                            @item.ClubName
+                        </td>
                         <td>
                             @item.Name
                         </td>
@@ -81,7 +87,7 @@
                 "pageLength": 10,
                 "dom": "<'table-window'<'table-responsive'rt>><'window-footer'<'col-md-6'i><'col-md-6'p>>",
                 "columnDefs": [
-                    { "orderable": false, "targets": 4 }
+                    { "orderable": false, "targets": 5 }
                 ]
             });
 

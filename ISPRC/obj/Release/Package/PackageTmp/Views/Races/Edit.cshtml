@@ -30,10 +30,35 @@
             <div class="form-horizontal">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         @Html.LabelFor(model => model.RaceName, htmlAttributes: new { @class = "control-label" })
                         @Html.EditorFor(model => model.RaceName, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.RaceName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="control-label">Release Point</label>
+                        @*
+            @Html.DropDownList("ReleasePointId", null, htmlAttributes: new { @class = "form-control releasePoint" })
+                        *@
+                        <select class="form-control releasePoint" id="RelaesePointId" name="ReleasePointId">
+                            <option>Not set</option>
+                            @if (ViewBag.ReleasePoints != null)
+                            {
+                                foreach (var item in ViewBag.ReleasePoints)
+                                {
+                                    if (item.ReleasePointId == Model.ReleasePointId)
+                                    {
+                                        <option selected data-coordinate="@item.ReleasePointCoordinates" value="@item.ReleasePointId">@item.ReleasePointName</option>
+                                    }
+                                    else
+                                    {
+                                        <option data-coordinate="@item.ReleasePointCoordinates" value="@item.ReleasePointId">@item.ReleasePointName</option>
+                                    }
+                                }
+                            }
+                        </select>
+                        @Html.ValidationMessageFor(model => model.ReleasePointId, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
@@ -49,6 +74,16 @@
                         @Html.ValidationMessageFor(model => model.RaceCutOffDate, "", new { @class = "text-danger" })
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.RaceDescription, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.RaceDescription, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.RaceDescription, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                @*
                 <div class="form-group">
                     <div class="col-md-6">
                         @Html.LabelFor(model => model.RaceLatitudeCoordinate, htmlAttributes: new { @class = "control-label" })
@@ -61,6 +96,8 @@
                         @Html.ValidationMessageFor(model => model.RaceLongitudeCoordinate, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                *@
+
                 <!--
                 <div class="form-horizontal">
                     @Html.LabelFor(model => model.RaceEndedDate, htmlAttributes: new { @class = "control-label" })
@@ -85,9 +122,15 @@
                 </div>
                 -->
                 <div class="form-group">
-                    <div class="col-md-offset-8 col-md-4">
+                    <div class="col-md-6">
+                        @Html.LabelFor(model => model.RaceLoadingDate, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.RaceLoadingDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.RaceLoadingDate, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6">
                         <br />
-                        <input type="submit" value="Save" class="btn btn-info btn-block" />
+                        <input type="submit" value="Save" class="btn btn-info btn-block" style="margin-top:5px;" />
                     </div>
                 </div>
             </div>
@@ -103,6 +146,9 @@
         var markers = [];
         var infowindow;
         var marker;
+        var editLatLng;
+        var coordinatesArray;
+        var formattedCoordinates;
 
         /*
         $(".latitude").keyup(function () {
@@ -114,14 +160,33 @@
         });
         */
 
+        $(document).ready(function () {
+            $(".releasePoint").change(function () {
+                var coordinates = $(this).find(':selected').data('coordinate');
+
+                coordinatesArray = coordinates.split(",");
+                console.log(coordinatesArray[0] + " " + coordinatesArray[1])
+                formattedCoordinates = { lat: Number(coordinatesArray[0]), lng: Number(coordinatesArray[1]) };
+
+                clearMarkers();
+                markers = [];
+
+                addMarker(formattedCoordinates);
+            });
+        });
+
         function initMap() {
-            var editLatLng = { lat: @Model.RaceLatitudeCoordinate, lng: @Model.RaceLongitudeCoordinate };
 
             map = new google.maps.Map(document.getElementById('map'), {
                 center: { lat: 14.599512, lng: 120.984222 },
                 zoom: 9
             });
 
+            editLatLng = { lat: @Model.ReleasePoint.RaceLatitudeCoordinate, lng: @Model.ReleasePoint.RaceLongitudeCoordinate };
+
+            addMarker(editLatLng);
+
+            /*
             map.addListener('click', function (event) {
                 clearMarkers();
                 markers = [];
@@ -134,7 +199,14 @@
             });
 
             addMarker(editLatLng);
+            */
         }
+
+        $(document).ready(function () {
+            $(".releasePoint").change(function () {
+                alert($(this).val());
+            });
+        });
 
         function addMarker(location) {
             marker = new google.maps.Marker({

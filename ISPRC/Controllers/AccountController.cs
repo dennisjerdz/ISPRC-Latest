@@ -150,6 +150,7 @@ namespace ISPRC.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "ClubName");
             return View();
         }
 
@@ -178,6 +179,9 @@ namespace ISPRC.Controllers
                     newUser.GivenName = model.GivenName;
                     newUser.MiddleName = model.MiddleName;
                     newUser.LastName = model.LastName;
+                    newUser.Address = model.Address;
+                    newUser.ClubId = model.ClubId;
+                    newUser.MobileNumber = model.MobileNumber;
                     newUser.LockoutEnabled = false;
                     db.SaveChanges();
 
@@ -195,6 +199,7 @@ namespace ISPRC.Controllers
             }
 
             // If we got this far, something failed, redisplay form
+            ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "ClubName");
             return View(model);
         }
 
@@ -510,16 +515,37 @@ namespace ISPRC.Controllers
 
         public ActionResult Accounts()
         {
-            List<AdminAccountModel> users = db.Users.Select(u => new AdminAccountModel()
-            {
-                Email = u.Email,
-                Name = u.GivenName + " " + u.LastName,
-                Id = u.Id,
-                Role = db.Roles.FirstOrDefault(r => r.Id == u.Roles.FirstOrDefault().RoleId).Name,
-                Locked = u.LockoutEnabled
-            }).ToList();
+            string userId = User.Identity.GetUserId();
+            ApplicationUser user = db.Users.FirstOrDefault(u => u.Id == userId);
 
-            return View(users);
+            if (User.IsInRole("Admin"))
+            {
+                List<AdminAccountModel> users = db.Users.Select(u => new AdminAccountModel()
+                {
+                    Email = u.Email,
+                    Name = u.GivenName + " " + u.LastName,
+                    ClubName = (u.Club.ClubName == null) ? "No Club" : u.Club.ClubName,
+                    Id = u.Id,
+                    Role = db.Roles.FirstOrDefault(r => r.Id == u.Roles.FirstOrDefault().RoleId).Name,
+                    Locked = u.LockoutEnabled
+                }).ToList();
+
+                return View(users);
+            }
+            else
+            {
+                List<AdminAccountModel> users = db.Users.Where(u=>u.ClubId == user.ClubId).Select(u => new AdminAccountModel()
+                {
+                    Email = u.Email,
+                    Name = u.GivenName + " " + u.LastName,
+                    ClubName = (u.Club.ClubName == null) ? "No Club" : u.Club.ClubName,
+                    Id = u.Id,
+                    Role = db.Roles.FirstOrDefault(r => r.Id == u.Roles.FirstOrDefault().RoleId).Name,
+                    Locked = u.LockoutEnabled
+                }).ToList();
+
+                return View(users);
+            }
         }
 
         public ActionResult Unlock(string id)
@@ -542,6 +568,7 @@ namespace ISPRC.Controllers
 
         public ActionResult AddClubOwner()
         {
+            ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "ClubName");
             return View();
         }
 
@@ -569,7 +596,9 @@ namespace ISPRC.Controllers
                     newUser.GivenName = model.GivenName;
                     newUser.MiddleName = model.MiddleName;
                     newUser.LastName = model.LastName;
+                    newUser.ClubId = model.ClubId;
                     newUser.LockoutEnabled = false;
+
                     db.SaveChanges();
 
                     // await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
@@ -586,6 +615,7 @@ namespace ISPRC.Controllers
             }
 
             // If we got this far, something failed, redisplay form
+            ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "ClubName");
             return View(model);
         }
     }

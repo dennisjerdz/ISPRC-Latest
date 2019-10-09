@@ -1,0 +1,68 @@
+﻿@model IEnumerable<ISPRC.Models.Club>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="marginTop40">Clubs&emsp;>&emsp;<a href="@Url.Action("Create")">Create Club</a></h3>
+        <hr />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-condensed table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ClubName)
+                    </th>
+                    <th>
+                        Member Count
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ClubName)
+                        </td>
+                        <td>
+                            @item.Members.Count()
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.ClubId })
+
+                            @Html.ActionLink("Delete", "Delete", new { id = item.ClubId })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var datatable = $("table").DataTable({
+                paging: true,
+                "pageLength": 10,
+                "dom": "<'table-window'<'table-responsive'rt>><'window-footer'<'col-md-6'i><'col-md-6'p>>",
+                "columnDefs": [
+                    { "orderable": false, "targets": 1 }
+                ]
+            });
+
+            $(".all-search").keyup(function () {
+                datatable.search($(this).val()).draw();
+            })
+        });
+    </script>
+}

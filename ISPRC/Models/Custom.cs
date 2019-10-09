@@ -23,11 +23,20 @@ namespace ISPRC.Models
     public class AdminAccountModel
     {
         public string Id { get; set; }
+        public string ClubName { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Role { get; set; }
         public bool Locked { get; set; }
         public DateTime? DateCreated { get; set; }
+    }
+
+    public class Club
+    {
+        public int ClubId { get; set; }
+        public string ClubName { get; set; }
+
+        public virtual List<ApplicationUser> Members { get; set; }
     }
 
     public class Race
@@ -36,6 +45,8 @@ namespace ISPRC.Models
         public int RaceId { get; set; }
         [Display(Name ="Race Name")]
         public string RaceName { get; set; }
+        [Display(Name = "Race Loading Date")]
+        public DateTime? RaceLoadingDate { get; set; }
         [Display(Name = "Race Start Date")]
         public DateTime RaceStartDate { get; set; }
         [Display(Name = "Race Cut-off Date")]
@@ -44,12 +55,18 @@ namespace ISPRC.Models
         public DateTime? RaceEndedDate { get; set; } // if prematurely ended by ForceRaceDone
         [Display(Name = "Date Created")]
         public DateTime DateCreated { get; set; }
-        [Display(Name = "Race Latitude")]
-        public string RaceLatitudeCoordinate { get; set; }
-        [Display(Name = "Race Longitude")]
-        public string RaceLongitudeCoordinate { get; set; }
         [Display(Name = "Forced Done")]
         public bool ForceRaceDone { get; set; } // prematurely end the race
+        [Display(Name = "Race Description")]
+        public string RaceDescription { get; set; }
+
+        public int? ClubId { get; set; }
+        [ForeignKey("ClubId")]
+        public virtual Club Club { get; set; }
+
+        public int? ReleasePointId { get; set; }
+        [ForeignKey("ReleasePointId")]
+        public virtual ReleasePoint ReleasePoint { get; set; }
 
         public bool RaceDone
         {
@@ -114,6 +131,23 @@ namespace ISPRC.Models
 
         [Display(Name = "Bird Code")]
         public string BirdCode { get; set; }
+
+        public DateTime DateCreated { get; set; }
+    }
+
+    public class ReleasePoint
+    {
+        public int ReleasePointId { get; set; }
+
+        [Display(Name = "Point Name")]
+        public string ReleasePointName { get; set; }
+
+        public string ReleasePointCoordinates { get; set; }
+
+        [Display(Name = "Latitude")]
+        public string RaceLatitudeCoordinate { get; set; }
+        [Display(Name = "Longitude")]
+        public string RaceLongitudeCoordinate { get; set; }
 
         public DateTime DateCreated { get; set; }
     }

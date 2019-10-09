@@ -134,7 +134,18 @@ namespace ISPRC.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            return View(db.Races.ToList());
+            string userId = User.Identity.GetUserId();
+
+            ApplicationUser user = db.Users.FirstOrDefault(u => u.Id == userId);
+
+            if(user.ClubId != null)
+            {
+                return View(db.Races.Include(r => r.ReleasePoint).Where(r=>r.ClubId == user.ClubId).ToList());
+            }
+            else
+            {
+                return View(db.Races.Include(r => r.ReleasePoint).ToList());
+            }
         }
 
         // GET: Races/Details/5
@@ -158,6 +169,8 @@ namespace ISPRC.Controllers
             // https://schmich.github.io/instascan/
             // https://davidshimjs.github.io/qrcodejs/
 
+            // ViewBag.ReleasePointId = new SelectList(db.ReleasePoints, "ReleasePointId", "ReleasePointName");
+            ViewBag.ReleasePoints = db.ReleasePoints.ToList();
             return View();
         }
 
@@ -166,9 +179,17 @@ namespace ISPRC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "RaceId,RaceName,RaceStartDate,RaceCutOffDate,RaceEndedDate,RaceLatitudeCoordinate,RaceLongitudeCoordinate,ForceRaceDone")] Race race)
+        public ActionResult Create([Bind(Include = "RaceId,RaceName,RaceStartDate,ReleasePointId,RaceCutOffDate,RaceEndedDate,ForceRaceDone,RaceLoadingDate,RaceDescription")] Race race)
         {
             race.DateCreated = DateTime.UtcNow.AddHours(8);
+
+            string userId = User.Identity.GetUserId();
+            ApplicationUser user = db.Users.FirstOrDefault(u => u.Id == userId);
+
+            if (user.ClubId != null)
+            {
+                race.ClubId = user.ClubId;
+            }
 
             if (ModelState.IsValid)
             {
@@ -177,6 +198,8 @@ namespace ISPRC.Controllers
                 return RedirectToAction("Index");
             }
 
+            // ViewBag.ReleasePointId = new SelectList(db.ReleasePoints, "ReleasePointId", "ReleasePointName");
+            ViewBag.ReleasePoints = db.ReleasePoints.ToList();
             return View(race);
         }
 
@@ -187,11 +210,12 @@ namespace ISPRC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Race race = db.Races.Find(id);
+            Race race = db.Races.Include(r=>r.ReleasePoint).FirstOrDefault(r=>r.RaceId == id);
             if (race == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.ReleasePoints = db.ReleasePoints.ToList();
             return View(race);
         }
 
@@ -200,7 +224,7 @@ namespace ISPRC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "RaceId,RaceName,RaceStartDate,RaceCutOffDate,RaceEndedDate,DateCreated,RaceLatitudeCoordinate,RaceLongitudeCoordinate,ForceRaceDone")] Race race)
+        public ActionResult Edit([Bind(Include = "RaceId,RaceName,RaceStartDate,RaceCutOffDate,ReleasePointId,RaceEndedDate,DateCreated,ForceRaceDone,RaceLoadingDate,RaceDescription")] Race race)
         {
             if (ModelState.IsValid)
             {
@@ -208,6 +232,8 @@ namespace ISPRC.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
+            ViewBag.ReleasePoints = db.ReleasePoints.ToList();
             return View(race);
         }
 

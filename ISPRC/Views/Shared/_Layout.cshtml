@@ -31,9 +31,21 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <li>@Html.ActionLink("Accounts", "Accounts", "Account")</li>
+                            <li>@Html.ActionLink("Clubs", "Index", "Clubs")</li>
+                        }
+                        @if (User.IsInRole("Club Owner"))
+                        {
+                            <li>@Html.ActionLink("Members", "Accounts", "Account")</li>
+                        }
+                        @if (User.IsInRole("Club Owner") || User.IsInRole("Admin"))
+                        {
+                            <li>@Html.ActionLink("Release Points", "Index", "ReleasePoints")</li>
                         }
                         <li>@Html.ActionLink("Races", "Index", "Races")</li>
-                        <li>@Html.ActionLink("Manage Racers", "Index", "Birds")</li>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Club Owner") || User.IsInRole("Member"))
+                        {
+                            <li>@Html.ActionLink("Manage Racers", "Index", "Birds")</li>
+                        }
                     </ul>
                     @Html.Partial("_LoginPartial")
                 </div>
