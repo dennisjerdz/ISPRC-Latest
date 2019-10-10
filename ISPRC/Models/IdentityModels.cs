@@ -18,8 +18,8 @@ namespace ISPRC.Models
 
         public string Address { get; set; }
         public string MobileNumber { get; set; }
-        public int? LoftLatitudeCoordinate { get; set; }
-        public int? LoftLongitudeCoordinate { get; set; }
+        public string LoftLatitudeCoordinate { get; set; }
+        public string LoftLongitudeCoordinate { get; set; }
 
         public virtual List<Bird> Birds { get; set; }
 

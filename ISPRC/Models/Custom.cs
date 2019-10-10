@@ -18,6 +18,13 @@ namespace ISPRC.Models
         public string RaceName { get; set; }
         [Required]
         public int BirdId { get; set; }
+
+        public string RaceDescription { get; set; }
+        public string RaceLatitudeCoordinate { get; set; }
+        public string RaceLongitudeCoordinate { get; set; }
+        public string LoftLatitudeCoordinate { get; set; }
+        public string LoftLongitudeCoordinate { get; set; }
+        public double? Distance { get; set; }
     }
 
     public class AdminAccountModel
@@ -37,6 +44,14 @@ namespace ISPRC.Models
         public string ClubName { get; set; }
 
         public virtual List<ApplicationUser> Members { get; set; }
+    }
+
+    public class EditLoftCoordinateModel
+    {
+        public string Name { get; set; }
+        public string UserId { get; set; }
+        public string LoftLatitudeCoordinate { get; set; }
+        public string LoftLongitudeCoordinate { get; set; }
     }
 
     public class Race
@@ -113,7 +128,7 @@ namespace ISPRC.Models
 
         public int RaceId { get; set; }
         [ForeignKey("RaceId")]
-        public Race Race { get; set; }
+        public virtual Race Race { get; set; }
 
         [Display(Name = "End Longitude")]
         public string EndLatitude { get; set; }

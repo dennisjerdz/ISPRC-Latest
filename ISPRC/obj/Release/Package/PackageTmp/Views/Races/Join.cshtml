@@ -14,6 +14,11 @@
 
 <div class="row">
     <div class="col-md-5">
+        <h5>Origin and Loft Location</h5>
+        <div id="map" style="height:400px; width:100%;"></div>
+    </div>
+
+    <div class="col-md-7">
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
@@ -32,6 +37,20 @@
 
                 <div class="form-group">
                     <div class="col-md-12">
+                        <label class="control-label">Race Description</label>
+                        <br />
+                        <span>@Model.RaceDescription</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label class="control-label">Distance (meters)</label>
+                        @Html.EditorFor(model => model.Distance, new { htmlAttributes = new { @class = "form-control distance", @readonly = "true" } })
+                        @Html.ValidationMessageFor(model => model.Distance, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6">
                         <label class="control-label">Choose Racer</label>
 
                         @Html.DropDownList("BirdId", null, htmlAttributes: new { @class = "form-control" })
@@ -49,3 +68,100 @@
         }
     </div>
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var map;
+        var markers = [];
+        var infowindow;
+        var marker;
+        var editLatLng;
+        var coordinatesArray;
+        var formattedCoordinates;
+        var originMarker;
+        var destinationMarker;
+
+        var origin;
+        var loft;
+
+        function initMap() {
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 14.599512, lng: 120.984222 },
+                zoom: 9
+            });
+
+            origin = { lat: @Model.RaceLatitudeCoordinate, lng: @Model.RaceLongitudeCoordinate };
+            loft = { lat: @Model.LoftLatitudeCoordinate, lng: @Model.LoftLongitudeCoordinate };
+
+            console.log(origin);
+            console.log(loft);
+
+            addMarker(origin);
+            addDestinationMarker(loft);
+
+            var distanceInMeters = google.maps.geometry.spherical.computeDistanceBetween(originMarker.getPosition(), destinationMarker.getPosition());
+
+            $(".distance").val(distanceInMeters);
+        }
+
+        function addMarker(location) {
+            originMarker = new google.maps.Marker({
+                position: location,
+                map: map
+            });
+            markers.push(originMarker);
+
+            originMarker['infowindow'] = new google.maps.InfoWindow({
+                content: "<div>Origin</div>"
+            });
+
+            google.maps.event.addListener(originMarker, 'mouseover', function () {
+                this['infowindow'].open(map, this);
+            });
+        }
+
+        function addDestinationMarker(location){
+            destinationMarker = new google.maps.Marker({
+                position: location,
+                map: map
+            });
+            markers.push(destinationMarker);
+
+            destinationMarker['infowindow'] = new google.maps.InfoWindow({
+                content: "<div>Loft</div>"
+            });
+
+            google.maps.event.addListener(destinationMarker, 'mouseover', function () {
+                this['infowindow'].open(map, this);
+            });
+        }
+
+        /*
+        function setMapOnAll(map) {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(map);
+            }
+        }
+
+        function clearMarkers() {
+            setMapOnAll(null);
+        }*/
+    </script>
+    <script src="~/Content/qrcode.min.js"></script>
+    <script type="text/javascript">
+        var qrcode = new QRCode("qrcode", {
+            text: "http://jindo.dev.naver.com/collie",
+            width: 128,
+            height: 128,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
+        // qrcode.clear(); // clear the code.
+        // qrcode.makeCode("http://naver.com"); // make another code.
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBk14L0DI_cIAX-EQFLP0uLIUZ00fopkGs&callback=initMap&libraries=geometry" async defer></script>
+}

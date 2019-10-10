@@ -92,6 +92,9 @@ namespace ISPRC.Controllers
         {
             Race race = db.Races.FirstOrDefault(r => r.RaceId == id);
 
+            string userId = User.Identity.GetUserId();
+            var user = db.Users.FirstOrDefault(u => u.Id == userId);
+
             if (race == null)
             {
                 return HttpNotFound();
@@ -101,6 +104,12 @@ namespace ISPRC.Controllers
                 JoinViewModel j = new JoinViewModel();
                 j.RaceId = race.RaceId;
                 j.RaceName = race.RaceName;
+                j.RaceLatitudeCoordinate = race.ReleasePoint.RaceLatitudeCoordinate;
+                j.RaceLongitudeCoordinate = race.ReleasePoint.RaceLongitudeCoordinate;
+                j.LoftLatitudeCoordinate = user.LoftLatitudeCoordinate;
+                j.LoftLongitudeCoordinate = user.LoftLongitudeCoordinate;
+                j.RaceDescription = race.RaceDescription;
+
                 string ownerId = User.Identity.GetUserId();
                 ViewBag.BirdId = new SelectList(db.Birds.Where(b=>b.OwnerId == ownerId && !b.Races.Any(br=>br.RaceId == race.RaceId)), "BirdId", "BirdName");
 
@@ -117,6 +126,7 @@ namespace ISPRC.Controllers
                 BirdRace br = new BirdRace();
                 br.BirdId = j.BirdId;
                 br.RaceId = j.RaceId;
+                br.Distance = j.Distance;
                 br.BirdCode = Guid.NewGuid().ToString().Substring(0,16);
                 br.DateCreated = DateTime.UtcNow.AddHours(8);
 

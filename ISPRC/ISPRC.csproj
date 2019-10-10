@@ -239,6 +239,10 @@
     <Compile Include="Migrations\201910091332023_Club Id for Races.Designer.cs">
       <DependentUpon>201910091332023_Club Id for Races.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910092320321_string coordinates for user.cs" />
+    <Compile Include="Migrations\201910092320321_string coordinates for user.Designer.cs">
+      <DependentUpon>201910092320321_string coordinates for user.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Custom.cs" />
@@ -353,6 +357,7 @@
     <Content Include="Views\Clubs\Details.cshtml" />
     <Content Include="Views\Clubs\Edit.cshtml" />
     <Content Include="Views\Clubs\Index.cshtml" />
+    <Content Include="Views\Account\EditLoftCoordinates.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -389,6 +394,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910091332023_Club Id for Races.resx">
       <DependentUpon>201910091332023_Club Id for Races.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910092320321_string coordinates for user.resx">
+      <DependentUpon>201910092320321_string coordinates for user.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

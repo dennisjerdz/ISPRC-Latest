@@ -265,3 +265,4 @@ C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC-Latest\ISPRC\obj\Debu
 C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC-Latest\ISPRC\obj\Debug\ISPRC.Migrations.RaceLoadingdateandDescription.resources
 C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC-Latest\ISPRC\obj\Debug\ISPRC.csprojResolveAssemblyReference.cache
 C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC-Latest\ISPRC\obj\Debug\ISPRC.Migrations.ClubIdforRaces.resources
+C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC-Latest\ISPRC\obj\Debug\ISPRC.Migrations.stringcoordinatesforuser.resources

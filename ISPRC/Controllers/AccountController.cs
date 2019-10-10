@@ -566,6 +566,35 @@ namespace ISPRC.Controllers
             return RedirectToAction("Accounts");
         }
 
+        public ActionResult EditLoftCoordinates(string id)
+        {
+            var user = db.Users.FirstOrDefault(u => u.Id == id);
+
+            EditLoftCoordinateModel e = new EditLoftCoordinateModel();
+
+            e.Name = user.GivenName;
+            e.UserId = user.Id;
+            e.LoftLatitudeCoordinate = user.LoftLatitudeCoordinate;
+            e.LoftLongitudeCoordinate = user.LoftLongitudeCoordinate;
+
+            return View(e);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditLoftCoordinates(EditLoftCoordinateModel e)
+        {
+            var user = db.Users.FirstOrDefault(u => u.Id == e.UserId);
+            user.LoftLatitudeCoordinate = e.LoftLatitudeCoordinate;
+            user.LoftLongitudeCoordinate = e.LoftLongitudeCoordinate;
+            db.SaveChanges();
+
+            return RedirectToAction("Accounts", "Account");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
         public ActionResult AddClubOwner()
         {
             ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "ClubName");

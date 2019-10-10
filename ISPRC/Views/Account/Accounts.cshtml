@@ -72,6 +72,8 @@
                                     <a href="@Url.Action("Lock",new { id=item.Id })" class="btn btn-xs btn-danger">Lock</a>
                                 }
                             }
+
+                            <a class="btn btn-xs btn-primary" href="@Url.Action("EditLoftCoordinates", new { id=item.Id })">Edit Loft Coordinates</a>
                         </td>
                     </tr>
                 }
