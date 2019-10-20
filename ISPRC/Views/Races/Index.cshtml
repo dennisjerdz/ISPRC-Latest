@@ -6,7 +6,14 @@
 
 <div class="row">
     <div class="col-md-12">
-        <h3 class="marginTop40">Races&emsp;>&emsp;<a href="@Url.Action("Create")">Create Race</a></h3>
+        <h3 class="marginTop40">
+            Races
+            @if (!User.IsInRole("Member"))
+            {
+                <text>&emsp;> &emsp;</text>
+                <a href="@Url.Action("Create")">Create Race</a>
+            }
+        </h3>
         <hr />
     </div>
 </div>
@@ -96,7 +103,7 @@
                         <td>
                             @if (DateTime.UtcNow.AddHours(8) < item.RaceStartDate)
                             {
-                                if (!User.IsInRole("Club Owner"))
+                                if (!User.IsInRole("Club Owner") || !User.IsInRole("Admin"))
                                 {
                                     <a class="btn btn-success btn-xs" href="@Url.Action("Join", new { id=item.RaceId })">Join</a>
                                 }

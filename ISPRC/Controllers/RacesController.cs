@@ -129,6 +129,7 @@ namespace ISPRC.Controllers
                 br.Distance = j.Distance;
                 br.BirdCode = Guid.NewGuid().ToString().Substring(0,16);
                 br.DateCreated = DateTime.UtcNow.AddHours(8);
+                br.ReleaseDate = db.Races.FirstOrDefault(r => r.RaceId == j.RaceId).RaceStartDate;
 
                 db.BirdsRace.Add(br);
                 db.SaveChanges();

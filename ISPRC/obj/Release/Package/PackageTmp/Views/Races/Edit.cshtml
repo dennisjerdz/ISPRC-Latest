@@ -21,10 +21,11 @@
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-            @Html.HiddenFor(model=>model.RaceId)
+            @Html.HiddenFor(model => model.RaceId)
             @Html.HiddenFor(model => model.DateCreated)
             @Html.HiddenFor(model => model.ForceRaceDone)
             @Html.HiddenFor(model => model.RaceEndedDate)
+            @Html.HiddenFor(model => model.ClubId)
 
             <br />
             <div class="form-horizontal">

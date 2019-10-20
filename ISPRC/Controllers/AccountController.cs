@@ -592,9 +592,6 @@ namespace ISPRC.Controllers
             return RedirectToAction("Accounts", "Account");
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-
         public ActionResult AddClubOwner()
         {
             ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "ClubName");
