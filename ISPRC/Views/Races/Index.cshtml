@@ -46,7 +46,7 @@
             </thead>
 
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.OrderBy(m=>m.RaceLoadingDate))
                 {
                     <tr>
                         <td>
@@ -103,7 +103,7 @@
                         <td>
                             @if (DateTime.UtcNow.AddHours(8) < item.RaceStartDate)
                             {
-                                if (!User.IsInRole("Club Owner") || !User.IsInRole("Admin"))
+                                if (User.IsInRole("Member"))
                                 {
                                     <a class="btn btn-success btn-xs" href="@Url.Action("Join", new { id=item.RaceId })">Join</a>
                                 }
@@ -137,6 +137,7 @@
         $(document).ready(function () {
             var datatable = $("table").DataTable({
                 paging: true,
+                "order":[],
                 "pageLength": 10,
                 "dom": "<'table-window'<'table-responsive'rt>><'window-footer'<'col-md-6'i><'col-md-6'p>>",
                 "columnDefs": [

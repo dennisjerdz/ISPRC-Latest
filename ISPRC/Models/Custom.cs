@@ -41,6 +41,7 @@ namespace ISPRC.Models
     public class Club
     {
         public int ClubId { get; set; }
+        [Required]
         public string ClubName { get; set; }
 
         public virtual List<ApplicationUser> Members { get; set; }
@@ -59,8 +60,10 @@ namespace ISPRC.Models
         [Key]
         public int RaceId { get; set; }
         [Display(Name ="Race Name")]
+        [Required]
         public string RaceName { get; set; }
         [Display(Name = "Race Loading Date")]
+        [Required]
         public DateTime? RaceLoadingDate { get; set; }
         [Display(Name = "Race Start Date")]
         public DateTime RaceStartDate { get; set; }
@@ -79,6 +82,7 @@ namespace ISPRC.Models
         [ForeignKey("ClubId")]
         public virtual Club Club { get; set; }
 
+        [Required]
         public int? ReleasePointId { get; set; }
         [ForeignKey("ReleasePointId")]
         public virtual ReleasePoint ReleasePoint { get; set; }
@@ -106,6 +110,7 @@ namespace ISPRC.Models
         [Key]
         public int BirdId { get; set; }
         [Display(Name = "Band Number")]
+        [Required]
         public string BirdName { get; set; }
         [Display(Name = "Date Created")]
         public DateTime DateCreated { get; set; }
@@ -155,13 +160,16 @@ namespace ISPRC.Models
         public int ReleasePointId { get; set; }
 
         [Display(Name = "Point Name")]
+        [Required]
         public string ReleasePointName { get; set; }
 
         public string ReleasePointCoordinates { get; set; }
 
         [Display(Name = "Latitude")]
+        [Required]
         public string RaceLatitudeCoordinate { get; set; }
         [Display(Name = "Longitude")]
+        [Required]
         public string RaceLongitudeCoordinate { get; set; }
 
         public DateTime DateCreated { get; set; }

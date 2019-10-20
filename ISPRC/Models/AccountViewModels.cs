@@ -64,12 +64,16 @@ namespace ISPRC.Models
 
     public class RegisterViewModel
     {
+        [Required]
         public string GivenName { get; set; }
+        [Required]
         public string MiddleName { get; set; }
+        [Required]
         public string LastName { get; set; }
 
         public int ClubId { get; set; }
         public string Address { get; set; }
+        [Required]
         public string MobileNumber { get; set; }
         public string LoftLatitudeCoordinate { get; set; }
         public string LoftLongitudeCoordinate { get; set; }

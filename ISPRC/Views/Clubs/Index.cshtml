@@ -39,7 +39,10 @@
                         <td>
                             @Html.ActionLink("Edit", "Edit", new { id = item.ClubId })
 
-                            @Html.ActionLink("Delete", "Delete", new { id = item.ClubId })
+                            @if (item.Members.Count() <= 0)
+                            {
+                                @Html.ActionLink("Delete", "Delete", new { id = item.ClubId })
+                            }
                         </td>
                     </tr>
                 }

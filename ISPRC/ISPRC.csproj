@@ -243,6 +243,10 @@
     <Compile Include="Migrations\201910092320321_string coordinates for user.Designer.cs">
       <DependentUpon>201910092320321_string coordinates for user.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910200847130_required adjustments.cs" />
+    <Compile Include="Migrations\201910200847130_required adjustments.Designer.cs">
+      <DependentUpon>201910200847130_required adjustments.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Custom.cs" />
@@ -397,6 +401,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910092320321_string coordinates for user.resx">
       <DependentUpon>201910092320321_string coordinates for user.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910200847130_required adjustments.resx">
+      <DependentUpon>201910200847130_required adjustments.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

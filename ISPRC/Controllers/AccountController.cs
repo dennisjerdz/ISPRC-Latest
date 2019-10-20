@@ -182,10 +182,11 @@ namespace ISPRC.Controllers
                     newUser.Address = model.Address;
                     newUser.ClubId = model.ClubId;
                     newUser.MobileNumber = model.MobileNumber;
-                    newUser.LockoutEnabled = false;
+                    // lock initially
+                    newUser.LockoutEnabled = true;
                     db.SaveChanges();
 
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    // await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -623,7 +624,8 @@ namespace ISPRC.Controllers
                     newUser.MiddleName = model.MiddleName;
                     newUser.LastName = model.LastName;
                     newUser.ClubId = model.ClubId;
-                    newUser.LockoutEnabled = false;
+                    // lock initially
+                    newUser.LockoutEnabled = true;
 
                     db.SaveChanges();
 
