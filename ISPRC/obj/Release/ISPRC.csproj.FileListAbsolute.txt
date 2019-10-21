@@ -529,3 +529,5 @@ C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC-Latest\ISPRC\obj\Rele
 C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC-Latest\ISPRC\obj\Release\ISPRC.Migrations.RaceLoadingdateandDescription.resources
 C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC-Latest\ISPRC\obj\Release\ISPRC.Migrations.ClubIdforRaces.resources
 C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC-Latest\ISPRC\obj\Release\ISPRC.Migrations.stringcoordinatesforuser.resources
+C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC-Latest\ISPRC\obj\Release\ISPRC.Migrations.requiredadjustments.resources
+C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC-Latest\ISPRC\obj\Release\ISPRC.Migrations.dontknowwhyneed.resources

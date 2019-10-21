@@ -23,6 +23,10 @@
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(model => model.RaceId)
+            @Html.HiddenFor(model => model.LoftLatitudeCoordinate)
+            @Html.HiddenFor(model => model.LoftLongitudeCoordinate)
+            @Html.HiddenFor(model=>model.RaceLatitudeCoordinate)
+            @Html.HiddenFor(model => model.RaceLongitudeCoordinate)
 
             <br />
             <div class="form-horizontal">

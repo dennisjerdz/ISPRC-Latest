@@ -6,7 +6,14 @@
 
 <div class="row">
     <div class="col-md-12">
-        <h3 class="marginTop40">Races&emsp;>&emsp;<a href="@Url.Action("Create")">Create Race</a></h3>
+        <h3 class="marginTop40">
+            Races
+            @if (!User.IsInRole("Member"))
+            {
+                <text>&emsp;> &emsp;</text>
+                <a href="@Url.Action("Create")">Create Race</a>
+            }
+        </h3>
         <hr />
     </div>
 </div>
@@ -39,7 +46,7 @@
             </thead>
 
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.OrderBy(m=>m.RaceLoadingDate))
                 {
                     <tr>
                         <td>
@@ -96,7 +103,7 @@
                         <td>
                             @if (DateTime.UtcNow.AddHours(8) < item.RaceStartDate)
                             {
-                                if (!User.IsInRole("Club Owner"))
+                                if (User.IsInRole("Member"))
                                 {
                                     <a class="btn btn-success btn-xs" href="@Url.Action("Join", new { id=item.RaceId })">Join</a>
                                 }
@@ -130,6 +137,7 @@
         $(document).ready(function () {
             var datatable = $("table").DataTable({
                 paging: true,
+                "order":[],
                 "pageLength": 10,
                 "dom": "<'table-window'<'table-responsive'rt>><'window-footer'<'col-md-6'i><'col-md-6'p>>",
                 "columnDefs": [

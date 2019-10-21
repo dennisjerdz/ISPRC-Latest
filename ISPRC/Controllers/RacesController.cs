@@ -127,6 +127,8 @@ namespace ISPRC.Controllers
                 br.BirdId = j.BirdId;
                 br.RaceId = j.RaceId;
                 br.Distance = j.Distance;
+                br.EndLatitude = j.LoftLatitudeCoordinate;
+                br.EndLongitude = j.LoftLongitudeCoordinate;
                 br.BirdCode = Guid.NewGuid().ToString().Substring(0,16);
                 br.DateCreated = DateTime.UtcNow.AddHours(8);
                 br.ReleaseDate = db.Races.FirstOrDefault(r => r.RaceId == j.RaceId).RaceStartDate;
@@ -235,7 +237,7 @@ namespace ISPRC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "RaceId,RaceName,RaceStartDate,RaceCutOffDate,ReleasePointId,RaceEndedDate,DateCreated,ForceRaceDone,RaceLoadingDate,RaceDescription")] Race race)
+        public ActionResult Edit([Bind(Include = "RaceId,ClubId,RaceName,RaceStartDate,RaceCutOffDate,ReleasePointId,RaceEndedDate,DateCreated,ForceRaceDone,RaceLoadingDate,RaceDescription")] Race race)
         {
             if (ModelState.IsValid)
             {
