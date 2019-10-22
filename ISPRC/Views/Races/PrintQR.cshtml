@@ -1,0 +1,42 @@
+﻿@model ISPRC.Models.BirdRace
+
+@{
+    Layout = null;
+}
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Print QR Code</title>
+    </head>
+
+    <body>
+        <div style="display:block;">
+            <button onclick="window.print();">Print</button>
+            <hr />
+        </div>
+
+        <div style="display:inline-block;">
+            @Model.Bird.BirdName
+            <br />
+            <div id="qrcode" style="width:150px; height:150px;"></div>
+        </div>
+
+        @Scripts.Render("~/bundles/jqueryval")
+
+        <script src="~/Content/qrcode.min.js"></script>
+
+        <script type="text/javascript">
+            var qrcode = new QRCode("qrcode", {
+                text: "http://isprc.azurewebsites.net/Races/Arrive?code=" + "@Model.BirdCode",
+                width: 128,
+                height: 128,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            // qrcode.clear(); // clear the code.
+            // qrcode.makeCode("http://naver.com"); // make another code.
+        </script>
+    </body>
+</html>

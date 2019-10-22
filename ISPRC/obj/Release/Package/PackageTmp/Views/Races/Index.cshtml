@@ -120,9 +120,20 @@
                                 }
                             }
 
-                            @if (DateTime.UtcNow.AddHours(8) > item.RaceCutOffDate)
+                            @if (User.IsInRole("Admin") || User.IsInRole("Club Owner"))
                             {
-                                <a class="btn btn-warning btn-xs" href="@Url.Action("Racers",new { id=item.RaceId })">Results</a>
+                                if ((DateTime.UtcNow.AddHours(8) > item.RaceCutOffDate))
+                                {
+                                    <a class="btn btn-warning btn-xs" href="@Url.Action("Racers",new { id=item.RaceId })">Results</a>
+                                }
+                            }
+
+                            @if (User.IsInRole("Member"))
+                            {
+                                if ((DateTime.UtcNow.AddHours(8) > item.RaceStartDate && DateTime.UtcNow.AddHours(8) < item.RaceCutOffDate) || (DateTime.UtcNow.AddHours(8) > item.RaceCutOffDate))
+                                {
+                                    <a class="btn btn-warning btn-xs" href="@Url.Action("Racers",new { id=item.RaceId })">Results</a>
+                                }
                             }
                         </td>
                     </tr>

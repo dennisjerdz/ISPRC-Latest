@@ -41,8 +41,11 @@
                         {
                             <li>@Html.ActionLink("Release Points", "Index", "ReleasePoints")</li>
                         }
-                        <li>@Html.ActionLink("Races", "Index", "Races")</li>
-                        @if (User.IsInRole("Admin") || User.IsInRole("Club Owner") || User.IsInRole("Member"))
+                        @if (User.IsInRole("Club Owner") || User.IsInRole("Admin") || User.IsInRole("Member"))
+                        {
+                            <li>@Html.ActionLink("Races", "Index", "Races")</li>
+                        }
+                        @if (User.IsInRole("Member"))
                         {
                             <li>@Html.ActionLink("Manage Racers", "Index", "Birds")</li>
                         }

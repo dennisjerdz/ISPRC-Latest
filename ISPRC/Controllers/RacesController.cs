@@ -276,6 +276,26 @@ namespace ISPRC.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult EndRace(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Race race = db.Races.Find(id);
+
+            if (race == null)
+            {
+                return HttpNotFound();
+            }
+
+            race.ForceRaceDone = true;
+            race.RaceEndedDate = DateTime.UtcNow.AddHours(8);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -283,6 +303,40 @@ namespace ISPRC.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public ActionResult PrintQR(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            BirdRace br = db.BirdsRace.Include(r=>r.Bird).FirstOrDefault(r=>r.BirdRaceId == id);
+
+            if (br == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(br);
+        }
+
+        public ActionResult PrintQRAll(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Race br = db.Races.Include(r => r.Birds).FirstOrDefault(r => r.RaceId == id);
+
+            if (br == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(br);
         }
     }
 }

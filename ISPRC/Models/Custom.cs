@@ -129,7 +129,7 @@ namespace ISPRC.Models
 
         public int BirdId { get; set; }
         [ForeignKey("BirdId")]
-        public Bird Bird { get; set; }
+        public virtual Bird Bird { get; set; }
 
         public int RaceId { get; set; }
         [ForeignKey("RaceId")]

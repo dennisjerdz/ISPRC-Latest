@@ -81,8 +81,10 @@ namespace ISPRC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ReleasePointId,ReleasePointName,ReleasePointCoordinates,RaceLatitudeCoordinate,RaceLongitudeCoordinate")] ReleasePoint releasePoint)
+        public ActionResult Edit([Bind(Include = "ReleasePointId,ReleasePointName,ReleasePointCoordinates,RaceLatitudeCoordinate,RaceLongitudeCoordinate,DateCreated")] ReleasePoint releasePoint)
         {
+            releasePoint.ReleasePointCoordinates = releasePoint.RaceLatitudeCoordinate + "," + releasePoint.RaceLongitudeCoordinate;
+
             if (ModelState.IsValid)
             {
                 db.Entry(releasePoint).State = EntityState.Modified;

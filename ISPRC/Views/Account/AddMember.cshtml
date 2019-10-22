@@ -1,19 +1,19 @@
 ﻿@model ISPRC.Models.RegisterViewModel
 @{
-    ViewBag.Title = "Add Club Owner";
+    ViewBag.Title = "Add Member";
 }
 
 <div class="row">
     <div class="col-md-12">
-        <h3 class="marginTop40"><a href="@Url.Action("Accounts")">Accounts</a>&emsp;>&emsp;Add Club Owner</h3>
+        <h3 class="marginTop40"><a href="@Url.Action("Accounts")">Accounts</a>&emsp;>&emsp;Add Member</h3>
         <hr />
     </div>
 </div>
 
-@using (Html.BeginForm("AddClubOwner", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("AddMember", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h4>Add Club Owner</h4>
+    <h4>Add Member</h4>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
@@ -33,6 +33,12 @@
         @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Address, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
@@ -67,7 +73,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-primary" value="Add Club Owner" />
+            <input type="submit" class="btn btn-primary" value="Add Member" />
         </div>
     </div>
 }

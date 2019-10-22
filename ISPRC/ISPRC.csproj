@@ -366,6 +366,9 @@
     <Content Include="Views\Clubs\Edit.cshtml" />
     <Content Include="Views\Clubs\Index.cshtml" />
     <Content Include="Views\Account\EditLoftCoordinates.cshtml" />
+    <Content Include="Views\Account\AddMember.cshtml" />
+    <Content Include="Views\Races\PrintQR.cshtml" />
+    <Content Include="Views\Races\PrintQRAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

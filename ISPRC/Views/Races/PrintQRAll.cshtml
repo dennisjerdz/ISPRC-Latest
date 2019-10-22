@@ -1,0 +1,49 @@
+﻿@model ISPRC.Models.Race
+
+@{
+    Layout = null;
+}
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Print All QR Codes</title>
+    </head>
+
+    <body>
+        <div style="display:block;">
+            <button onclick="window.print();">Print</button>
+            <hr />
+        </div>
+
+        @Scripts.Render("~/bundles/jqueryval")
+        <script src="~/Content/qrcode.min.js"></script>
+
+        @{ 
+            int count = 0;
+        }
+        @foreach (var item in Model.Birds)
+        {
+            <div style="display:inline-block;">
+                @item.Bird.BirdName
+                <br />
+                <div id="qrcode_@count" style="width:150px; height:150px;"></div>
+            </div>
+
+            <script type="text/javascript">
+                var qrcode = new QRCode("qrcode_@count", {
+                    text: "http://isprc.azurewebsites.net/Races/Arrive?code=" + "@item.BirdCode",
+                    width: 128,
+                    height: 128,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+
+                // qrcode.clear(); // clear the code.
+                // qrcode.makeCode("http://naver.com"); // make another code.
+            </script>
+
+            count++;
+        }
+    </body>
+</html>

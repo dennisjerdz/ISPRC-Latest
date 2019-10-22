@@ -593,6 +593,58 @@ namespace ISPRC.Controllers
             return RedirectToAction("Accounts", "Account");
         }
 
+        public ActionResult AddMember()
+        {
+            ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "ClubName");
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddMember(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, GivenName = model.GivenName, MiddleName = model.MiddleName, LastName = model.LastName };
+                var result = await UserManager.CreateAsync(user, model.Password);
+
+                var roleStore = new RoleStore<IdentityRole>(db);
+                var roleManager = new RoleManager<IdentityRole>(roleStore);
+
+                var userStore = new UserStore<ApplicationUser>(db);
+                var userManager = new UserManager<ApplicationUser>(userStore);
+                userManager.AddToRole(user.Id, "Member");
+
+                if (result.Succeeded)
+                {
+                    var newUser = db.Users.FirstOrDefault(u => u.Email == user.Email);
+                    newUser.GivenName = model.GivenName;
+                    newUser.MiddleName = model.MiddleName;
+                    newUser.LastName = model.LastName;
+                    newUser.ClubId = model.ClubId;
+                    // lock initially
+                    newUser.LockoutEnabled = true;
+
+                    db.SaveChanges();
+
+                    // await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                    // Send an email with this link
+                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                    return RedirectToAction("Accounts", "Account");
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "ClubName");
+            return View(model);
+        }
+
         public ActionResult AddClubOwner()
         {
             ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "ClubName");

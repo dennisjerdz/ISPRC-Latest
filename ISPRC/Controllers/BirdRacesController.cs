@@ -121,7 +121,7 @@ namespace ISPRC.Controllers
             BirdRace birdRace = db.BirdsRace.Find(id);
             db.BirdsRace.Remove(birdRace);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Racers", "Races", new { id = birdRace.RaceId });
         }
 
         protected override void Dispose(bool disposing)
