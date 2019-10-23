@@ -4,7 +4,17 @@
 }
 <div class="row">
     <div class="col-md-12">
-        <h3 class="marginTop40">Accounts&emsp;>&emsp;<a href="@Url.Action("AddClubOwner")">Add Club Owner</a></h3>
+
+        @if (User.IsInRole("Club Owner"))
+        {
+            <h3 class="marginTop40">Accounts&emsp;>&emsp;<a href="@Url.Action("AddMember")">Add Member</a></h3>
+        }
+
+        @if (User.IsInRole("Admin"))
+        {
+            <h3 class="marginTop40">Accounts&emsp;>&emsp;<a href="@Url.Action("AddClubOwner")">Add Club Owner</a></h3>
+        }
+
         <hr />
     </div>
 </div>
