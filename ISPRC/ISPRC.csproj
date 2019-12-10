@@ -251,6 +251,14 @@
     <Compile Include="Migrations\201910210010572_dont know why need.Designer.cs">
       <DependentUpon>201910210010572_dont know why need.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912091523276_club specific release point.cs" />
+    <Compile Include="Migrations\201912091523276_club specific release point.Designer.cs">
+      <DependentUpon>201912091523276_club specific release point.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912091553275_active release points.cs" />
+    <Compile Include="Migrations\201912091553275_active release points.Designer.cs">
+      <DependentUpon>201912091553275_active release points.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Custom.cs" />
@@ -414,6 +422,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910210010572_dont know why need.resx">
       <DependentUpon>201910210010572_dont know why need.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912091523276_club specific release point.resx">
+      <DependentUpon>201912091523276_club specific release point.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912091553275_active release points.resx">
+      <DependentUpon>201912091553275_active release points.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

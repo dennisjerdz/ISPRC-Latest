@@ -6,14 +6,21 @@
 
 <div class="row">
     <div class="col-md-12">
-        <h3 class="marginTop40">
-            Races
-            @if (!User.IsInRole("Member"))
-            {
-                <text>&emsp;> &emsp;</text>
-                <a href="@Url.Action("Create")">Create Race</a>
-            }
-        </h3>
+        <div class="row">
+            <div class="col-xs-8">
+                <h3 class="marginTop40">
+                    Races
+                    @if (!User.IsInRole("Member"))
+                    {
+                        <text>&emsp;> &emsp;</text>
+                        <a href="@Url.Action("Create")">Create Race</a>
+                    }
+                </h3>
+            </div>
+            <div class="col-xs-4">
+                <input class="all-search form-control pull-right" style="margin-top:38px;" placeholder="Search ..." />
+            </div>
+        </div>
         <hr />
     </div>
 </div>
@@ -23,6 +30,9 @@
         <table class="table table-condensed table-hover">
             <thead>
                 <tr>
+                    <th>
+                        Club
+                    </th>
                     <th>
                         Name
                     </th>
@@ -46,9 +56,12 @@
             </thead>
 
             <tbody>
-                @foreach (var item in Model.OrderBy(m=>m.RaceLoadingDate))
+                @foreach (var item in Model.OrderBy(m=>m.RaceStartDate))
                 {
                     <tr>
+                        <td>
+                            @item.Club.ClubName
+                        </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.RaceName)
                         </td>
@@ -152,7 +165,7 @@
                 "pageLength": 10,
                 "dom": "<'table-window'<'table-responsive'rt>><'window-footer'<'col-md-6'i><'col-md-6'p>>",
                 "columnDefs": [
-                    { "orderable": false, "targets": 6 }
+                    { "orderable": false, "targets": 7 }
                 ]
             });
 

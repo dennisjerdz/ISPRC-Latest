@@ -173,5 +173,11 @@ namespace ISPRC.Models
         public string RaceLongitudeCoordinate { get; set; }
 
         public DateTime DateCreated { get; set; }
+
+        public bool? IsActive { get; set; }
+
+        public int? ClubId { get; set; }
+        [ForeignKey("ClubId")]
+        public virtual Club Club { get; set; }
     }
 }

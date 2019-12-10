@@ -4,17 +4,22 @@
 }
 <div class="row">
     <div class="col-md-12">
+        <div class="row">
+            <div class="col-xs-8">
+                @if (User.IsInRole("Club Owner"))
+                {
+                    <h3 class="marginTop40">Accounts&emsp;>&emsp;<a href="@Url.Action("AddMember")">Add Member</a></h3>
+                }
 
-        @if (User.IsInRole("Club Owner"))
-        {
-            <h3 class="marginTop40">Accounts&emsp;>&emsp;<a href="@Url.Action("AddMember")">Add Member</a></h3>
-        }
-
-        @if (User.IsInRole("Admin"))
-        {
-            <h3 class="marginTop40">Accounts&emsp;>&emsp;<a href="@Url.Action("AddClubOwner")">Add Club Owner</a></h3>
-        }
-
+                @if (User.IsInRole("Admin"))
+                {
+                    <h3 class="marginTop40">Accounts&emsp;>&emsp;<a href="@Url.Action("AddClubOwner")">Add Club Owner</a></h3>
+                }
+            </div>
+            <div class="col-xs-4">
+                <input class="all-search form-control pull-right" style="margin-top:38px;" placeholder="Search ..." />
+            </div>
+        </div>
         <hr />
     </div>
 </div>

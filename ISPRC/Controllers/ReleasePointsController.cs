@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ISPRC.Models;
+using Microsoft.AspNet.Identity;
 
 namespace ISPRC.Controllers
 {
@@ -17,7 +18,16 @@ namespace ISPRC.Controllers
         // GET: ReleasePoints
         public ActionResult Index()
         {
-            return View(db.ReleasePoints.ToList());
+            if (User.IsInRole("Admin"))
+            {
+                return View(db.ReleasePoints.ToList());
+            }
+            else
+            {
+                string userId = User.Identity.GetUserId();
+                ApplicationUser user = db.Users.FirstOrDefault(u => u.Id == userId);
+                return View(db.ReleasePoints.Where(r=>r.ClubId == user.ClubId).ToList());
+            }
         }
 
         // GET: ReleasePoints/Details/5
@@ -51,6 +61,10 @@ namespace ISPRC.Controllers
             releasePoint.DateCreated = DateTime.UtcNow.AddHours(8);
             releasePoint.ReleasePointCoordinates = releasePoint.RaceLatitudeCoordinate + "," + releasePoint.RaceLongitudeCoordinate;
 
+            string userId = User.Identity.GetUserId();
+            ApplicationUser user = db.Users.FirstOrDefault(u => u.Id == userId);
+            releasePoint.ClubId = user.ClubId;
+
             if (ModelState.IsValid)
             {
                 db.ReleasePoints.Add(releasePoint);
@@ -81,7 +95,7 @@ namespace ISPRC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ReleasePointId,ReleasePointName,ReleasePointCoordinates,RaceLatitudeCoordinate,RaceLongitudeCoordinate,DateCreated")] ReleasePoint releasePoint)
+        public ActionResult Edit([Bind(Include = "ReleasePointId,ClubId,ReleasePointName,ReleasePointCoordinates,RaceLatitudeCoordinate,RaceLongitudeCoordinate,DateCreated")] ReleasePoint releasePoint)
         {
             releasePoint.ReleasePointCoordinates = releasePoint.RaceLatitudeCoordinate + "," + releasePoint.RaceLongitudeCoordinate;
 
@@ -116,6 +130,22 @@ namespace ISPRC.Controllers
         {
             ReleasePoint releasePoint = db.ReleasePoints.Find(id);
             db.ReleasePoints.Remove(releasePoint);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult EnableReleasePoint(int id)
+        {
+            ReleasePoint releasePoint = db.ReleasePoints.Find(id);
+            releasePoint.IsActive = true;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult DisableReleasePoint(int id)
+        {
+            ReleasePoint releasePoint = db.ReleasePoints.Find(id);
+            releasePoint.IsActive = false;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

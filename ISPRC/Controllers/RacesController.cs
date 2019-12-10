@@ -183,7 +183,17 @@ namespace ISPRC.Controllers
             // https://davidshimjs.github.io/qrcodejs/
 
             // ViewBag.ReleasePointId = new SelectList(db.ReleasePoints, "ReleasePointId", "ReleasePointName");
-            ViewBag.ReleasePoints = db.ReleasePoints.ToList();
+
+            string userId = User.Identity.GetUserId();
+            if (userId != null)
+            {
+                ApplicationUser user = db.Users.FirstOrDefault(u => u.Id == userId);
+                ViewBag.ReleasePoints = db.ReleasePoints.Where(r=>r.ClubId == user.ClubId && r.IsActive == true).OrderBy(r => r.ReleasePointName).ToList();
+            }else
+            {
+                ViewBag.ReleasePoints = db.ReleasePoints.Where(r=>r.IsActive == true).OrderBy(r=>r.ReleasePointName).ToList();
+            }
+
             return View();
         }
 
@@ -212,7 +222,16 @@ namespace ISPRC.Controllers
             }
 
             // ViewBag.ReleasePointId = new SelectList(db.ReleasePoints, "ReleasePointId", "ReleasePointName");
-            ViewBag.ReleasePoints = db.ReleasePoints.ToList();
+
+            if (userId != null)
+            {
+                ViewBag.ReleasePoints = db.ReleasePoints.Where(r => r.ClubId == user.ClubId && r.IsActive == true).OrderBy(r => r.ReleasePointName).ToList();
+            }
+            else
+            {
+                ViewBag.ReleasePoints = db.ReleasePoints.Where(r => r.IsActive == true).OrderBy(r => r.ReleasePointName).ToList();
+            }
+
             return View(race);
         }
 
@@ -228,7 +247,18 @@ namespace ISPRC.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ReleasePoints = db.ReleasePoints.ToList();
+
+            string userId = User.Identity.GetUserId();
+            if (userId != null)
+            {
+                ApplicationUser user = db.Users.FirstOrDefault(u => u.Id == userId);
+                ViewBag.ReleasePoints = db.ReleasePoints.Where(r => r.ClubId == user.ClubId && r.IsActive == true).OrderBy(r => r.ReleasePointName).ToList();
+            }
+            else
+            {
+                ViewBag.ReleasePoints = db.ReleasePoints.Where(r => r.IsActive == true).OrderBy(r => r.ReleasePointName).ToList();
+            }
+
             return View(race);
         }
 
@@ -246,7 +276,17 @@ namespace ISPRC.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ReleasePoints = db.ReleasePoints.ToList();
+            string userId = User.Identity.GetUserId();
+            if (userId != null)
+            {
+                ApplicationUser user = db.Users.FirstOrDefault(u => u.Id == userId);
+                ViewBag.ReleasePoints = db.ReleasePoints.Where(r => r.ClubId == user.ClubId && r.IsActive == true).OrderBy(r => r.ReleasePointName).ToList();
+            }
+            else
+            {
+                ViewBag.ReleasePoints = db.ReleasePoints.Where(r => r.IsActive == true).OrderBy(r => r.ReleasePointName).ToList();
+            }
+
             return View(race);
         }
 

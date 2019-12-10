@@ -6,7 +6,14 @@
 
 <div class="row">
     <div class="col-md-12">
-        <h3 class="marginTop40">Release Points&emsp;>&emsp;<a href="@Url.Action("Create")">Add Release Point</a></h3>
+        <div class="row">
+            <div class="col-xs-8">
+                <h3 class="marginTop40">Release Points&emsp;>&emsp;<a href="@Url.Action("Create")">Add Release Point</a></h3>
+            </div>
+            <div class="col-xs-4">
+                <input class="all-search form-control pull-right" style="margin-top:38px;" placeholder="Search ..." />
+            </div>
+        </div>
         <hr />
     </div>
 </div>
@@ -17,10 +24,10 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.ReleasePointName)
+                        Club
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.ReleasePointCoordinates)
+                        @Html.DisplayNameFor(model => model.ReleasePointName)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.RaceLatitudeCoordinate)
@@ -28,22 +35,25 @@
                     <th>
                         @Html.DisplayNameFor(model => model.RaceLongitudeCoordinate)
                     </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.DateCreated)
-                    </th>
                     <th></th>
                 </tr>
             </thead>
 
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.OrderBy(m=>m.ReleasePointName))
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.ReleasePointName)
+                            @if (item.ClubId != null)
+                            {
+                                <text>@item.Club.ClubName</text>
+                            }else
+                            {
+                                <text>None</text>
+                            }
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.ReleasePointCoordinates)
+                            @Html.DisplayFor(modelItem => item.ReleasePointName)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.RaceLatitudeCoordinate)
@@ -52,12 +62,18 @@
                             @Html.DisplayFor(modelItem => item.RaceLongitudeCoordinate)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.DateCreated)
-                        </td>
-                        <td>
                             @Html.ActionLink("Edit", "Edit", new { id = item.ReleasePointId }) |
                             @Html.ActionLink("Details", "Details", new { id = item.ReleasePointId }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.ReleasePointId })
+                            @Html.ActionLink("Delete", "Delete", new { id = item.ReleasePointId }) |
+
+                            @if (item.IsActive == true)
+                            {
+                                @Html.ActionLink("Disable", "DisableReleasePoint", new { id = item.ReleasePointId })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Enable", "EnableReleasePoint", new { id = item.ReleasePointId })
+                            }
                         </td>
                     </tr>
                 }
@@ -74,7 +90,7 @@
                 "pageLength": 10,
                 "dom": "<'table-window'<'table-responsive'rt>><'window-footer'<'col-md-6'i><'col-md-6'p>>",
                 "columnDefs": [
-                    { "orderable": false, "targets": 5 }
+                    { "orderable": false, "targets": 3 }
                 ]
             });
 
