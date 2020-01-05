@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using ISPRC.Models;
 using Microsoft.AspNet.Identity;
+using System.Text;
 
 namespace ISPRC.Controllers
 {
@@ -31,6 +32,22 @@ namespace ISPRC.Controllers
                 return Content("Release Date not yet set");
             }
 
+            if (br.ArrivalDate != null) {
+                StringBuilder contentE = new StringBuilder();
+                var durationE = (br.ArrivalDate - br.Race.RaceStartDate).Value;
+                contentE.Append("<html>"+
+                                    "<center style='margin-top:50px;'>"+
+                                        "<h1>Racer already arrived at " + br.ArrivalDate + ".</h1>"+
+                                        "<h3>Release Date: " + br.ReleaseDate + ".</h3>" +
+                                        "<h3>Distance: " + Math.Round(br.Distance.Value,4) + " meters.</h3>" +
+                                        "<h3>Flight Duration: " + durationE.TotalMinutes + " minutes.</h3>" +
+                                        "<h3>Speed: " + br.Speed + " m/s.</h3>" +
+                                        "<h5><a href='" + Url.Action("Racers", "Races", new { id = br.RaceId }) + "'>View Results</a></h5>" +
+                                    "</center>" +
+                "</html>");
+                return Content(contentE.ToString());
+            }
+
             br.ArrivalDate = DateTime.UtcNow.AddHours(8);
 
             double time = br.ArrivalDate.Value.Subtract(br.ReleaseDate.Value).TotalSeconds;
@@ -38,7 +55,20 @@ namespace ISPRC.Controllers
             br.Speed = br.Distance / time; // meters per second
             db.SaveChanges();
 
-            return Content(code +" "+time.ToString()+" "+br.Speed.ToString());
+            StringBuilder content = new StringBuilder();
+            var duration = (br.ArrivalDate - br.Race.RaceStartDate).Value;
+            content.Append("<html>" +
+                                "<center style='margin-top:50px;'>" +
+                                    "<h1>We've received your code. The results are as follows;</h1>" +
+                                    "<h3>Arrival Date " + br.ArrivalDate + ".</h3>" +
+                                    "<h3>Release Date: " + br.ReleaseDate + ".</h3>" +
+                                    "<h3>Distance: " + Math.Round(br.Distance.Value, 4) + " meters.</h3>" +
+                                    "<h3>Flight Duration: " + duration.TotalMinutes + " minutes.</h3>" +
+                                    "<h3>Speed: " + br.Speed + " m/s.</h3>" +
+                                    "<h5><a href='"+Url.Action("Racers","Races", new { id=br.RaceId })+"'>View Results</a></h5>" +
+                                "</center>" +
+            "</html>");
+            return Content(content.ToString());
         }
 
         public ActionResult ManageRacer(int? id)
@@ -84,6 +114,13 @@ namespace ISPRC.Controllers
                 return HttpNotFound();
             }
 
+            ViewBag.RaceName = race.RaceName;
+            ViewBag.ReleasePointName = race.ReleasePoint.ReleasePointName;
+            ViewBag.RaceCoordinates = race.ReleasePoint.ReleasePointCoordinates;
+            ViewBag.RaceStartDate = race.RaceStartDate;
+            ViewBag.RaceCutOffDate = race.RaceCutOffDate;
+            ViewBag.RaceDescription = race.RaceDescription;
+
             return View(db.BirdsRace.Include(r=>r.Bird).Where(r=>r.RaceId==race.RaceId).ToList());
         }
 
@@ -109,6 +146,11 @@ namespace ISPRC.Controllers
                 j.LoftLatitudeCoordinate = user.LoftLatitudeCoordinate;
                 j.LoftLongitudeCoordinate = user.LoftLongitudeCoordinate;
                 j.RaceDescription = race.RaceDescription;
+
+                j.ReleasePointName = race.ReleasePoint.ReleasePointName;
+                j.RaceLoadingDate = race.RaceLoadingDate;
+                j.RaceStartDate = race.RaceStartDate;
+                j.RaceCutOffDate = race.RaceCutOffDate;
 
                 string ownerId = User.Identity.GetUserId();
                 ViewBag.BirdId = new SelectList(db.Birds.Where(b=>b.OwnerId == ownerId && !b.Races.Any(br=>br.RaceId == race.RaceId)), "BirdId", "BirdName");

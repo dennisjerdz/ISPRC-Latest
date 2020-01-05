@@ -25,6 +25,11 @@ namespace ISPRC.Models
         public string LoftLatitudeCoordinate { get; set; }
         public string LoftLongitudeCoordinate { get; set; }
         public double? Distance { get; set; }
+
+        public string ReleasePointName { get; set; }
+        public DateTime? RaceLoadingDate { get; set; }
+        public DateTime? RaceStartDate { get; set; }
+        public DateTime? RaceCutOffDate { get; set; }
     }
 
     public class AdminAccountModel

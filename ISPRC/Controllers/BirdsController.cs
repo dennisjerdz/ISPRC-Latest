@@ -76,6 +76,11 @@ namespace ISPRC.Controllers
             bird.DateCreated = DateTime.UtcNow.AddHours(8);
             bird.OwnerId = User.Identity.GetUserId();
 
+            Bird existing = db.Birds.FirstOrDefault(b => b.BirdName == bird.BirdName);
+            if (existing != null) {
+                ModelState.AddModelError("BirdName", "Band Number already exists.");
+            }
+
             if (ModelState.IsValid)
             {
                 db.Birds.Add(bird);
