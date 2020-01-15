@@ -1,3 +1,138 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+
+<style>
+    .cards {
+        height:120px;
+        width:100%;
+        border-radius:5px;
+        border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .expandable {
+        padding: 14px;
+        border: 1px solid rgba(0,0,0,0.1);
+        border-radius:5px;
+        height: 500px;
+        overflow-y:auto;
+    }
+</style>
+
+@if (User.IsInRole("Admin"))
+{
+<div class="row" style="margin-top:60px;">
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="cards">
+                    Accounts
+                    <br />
+                    @ViewBag.Accounts
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="cards">
+                    Races
+                    <br />
+                    @ViewBag.Races
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="cards">
+                    Birds
+                    <br />
+                    @ViewBag.Birds
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="cards">
+                    Active Races
+                    <br />
+                    @ViewBag.ActiveRaces
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="cards">
+                    Active Racers
+                    <br />
+                    @ViewBag.ActiveRacers
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="cards">
+                    Last Finished Race
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="expandable">
+                    <h3>Club Owner</h3>
+                    <h4>Adding Club member</h4>
+                    <ul>
+                        <li>Press "Members"</li>
+                        <li>On the member page, press "Add Club Member</li>
+                        <li>On the add club member page, fill up the given name, middle name, last name, email, and password (password should contain at least 1 uppercase, 1 number, and 1 special character)</li>
+                        <li>Press "Add Club Member"</li>
+                    </ul>
+                    <h4>Add Club Member Loft Coordinates (Important)</h4>
+                    <ul>
+                        <li>Press "Edit Loft Coordinates"</li>
+                        <li>On the edit member loft coordinates page, fill up the latitude and longitude (you can use the map located at the left side of the page to select the latitude and longitude)</li>
+                        <li>Press "Save</li>
+                    </ul>
+                    <h4>Creating Release (Race Starting Point)</h4>
+                    <ul>
+                        <li>Press "'Release Points"</li>
+                        <li>On the release point page, press "Add Release Point"</li>
+                        <li>On the add release point page, fill up the point name, latitude, and longitude (you can use the map located at the left side of the page to select latitude and longitude</li>
+                        <li>Press "Add"</li>
+                    </ul>
+                    <h4>Creating Race</h4>
+                    <ul>
+                        <li>Press "Races"</li>
+                        <li>On the race page, press "Create Race"</li>
+                        <li>On the create race page, fill up the race name, release point (a marker will appear on the map after choosing a release point), race start date, race cut-off date, race description (optional), and race loading date</li>
+                        <li>Press "Create"</li>
+                    </ul>
+                    <h4>Printing QR Code</h4>
+                    <ul>
+                        <li>Press "Races"</li>
+                        <li>On the races page, choose the race that you want and press "Racers"</li>
+                        <li>On the races racer page, press "Print All QR Codes"</li>
+                        <li>Press "Print'</li>
+                    </ul>
+                    <h4>View Race Result during the Race</h4>
+                    <ul>
+                        <li>Press "Races"</li>
+                        <li>On the race page, choose the race that you want and press "Racers"</li>
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+@if (User.IsInRole("Club Member"))
+{
+
+}
+
+@if (User.IsInRole("Club Owner"))
+{
+
+}
+
+@section scripts{
+    <script>
+        
+    </script>    
+}

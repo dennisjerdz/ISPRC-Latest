@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -278,6 +279,10 @@
     <Content Include="Content\DataTables-1.10.18\images\sort_desc_disabled.png" />
     <Content Include="Content\datatables.min.css" />
     <Content Include="Content\datatables.min.js" />
+    <Content Include="Content\icofont\demo.html" />
+    <Content Include="Content\icofont\fonts\icofont.svg" />
+    <Content Include="Content\icofont\icofont.css" />
+    <Content Include="Content\icofont\icofont.min.css" />
     <Content Include="Content\instascanF.min.js" />
     <Content Include="Content\qr-scanner-worker.min.js" />
     <Content Include="Content\qr-scanner.min.js" />
@@ -293,6 +298,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\DataTables-1.10.18\images\Sorting icons.psd" />
+    <Content Include="Content\icofont\fonts\icofont.eot" />
+    <Content Include="Content\icofont\fonts\icofont.ttf" />
+    <Content Include="Content\icofont\fonts\icofont.woff" />
+    <Content Include="Content\icofont\fonts\icofont.woff2" />
     <None Include="Properties\PublishProfiles\isprc - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\isprc - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />

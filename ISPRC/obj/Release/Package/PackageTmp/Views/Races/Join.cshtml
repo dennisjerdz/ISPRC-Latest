@@ -32,10 +32,28 @@
             <div class="form-horizontal">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <label class="control-label">Race Name</label>
                         <br />
                         <span>@Model.RaceName</span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label">Race Loading Date</label>
+                        <br />
+                        <span>@Model.RaceLoadingDate</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label class="control-label">Race Start Date</label>
+                        <br />
+                        <span>@Model.RaceStartDate</span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label">Race Cut Off Date</label>
+                        <br />
+                        <span>@Model.RaceCutOffDate</span>
                     </div>
                 </div>
 
@@ -44,7 +62,17 @@
                         <label class="control-label">Race Description</label>
                         <br />
                         <span>@Model.RaceDescription</span>
+                        <hr style="border-top:2px solid #eeeeee;" />
                     </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label class="control-label">Release Point</label>
+                        <br />
+                        <span>@Model.ReleasePointName</span>
+                    </div>
+                    
                 </div>
 
                 <div class="form-group">
@@ -57,7 +85,7 @@
                     <div class="col-md-6">
                         <label class="control-label">Choose Racer</label>
 
-                        @Html.DropDownList("BirdId", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.DropDownList("BirdId", null, htmlAttributes: new { @class = "form-control", @required="true" })
                         @Html.ValidationMessageFor(model => model.BirdId, "", new { @class = "text-danger" })
                     </div>
                 </div>

@@ -595,8 +595,20 @@ namespace ISPRC.Controllers
 
         public ActionResult AddMember()
         {
-            ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "ClubName");
-            return View();
+            if (User.IsInRole("Club Owner"))
+            {
+                string userId = User.Identity.GetUserId();
+                ApplicationUser user = db.Users.FirstOrDefault(u => u.Id == userId);
+                int clubId = user.ClubId.Value;
+
+                ViewBag.ClubId = new SelectList(db.Clubs.Where(x=>x.ClubId == clubId), "ClubId", "ClubName");
+                return View();
+            }
+            else
+            {
+                ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "ClubName");
+                return View();
+            }
         }
 
         [HttpPost]
@@ -641,8 +653,20 @@ namespace ISPRC.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "ClubName");
-            return View(model);
+            if (User.IsInRole("Club Owner"))
+            {
+                string userId = User.Identity.GetUserId();
+                ApplicationUser user = db.Users.FirstOrDefault(u => u.Id == userId);
+                int clubId = user.ClubId.Value;
+
+                ViewBag.ClubId = new SelectList(db.Clubs.Where(x => x.ClubId == clubId), "ClubId", "ClubName");
+                return View(model);
+            }
+            else
+            {
+                ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "ClubName");
+                return View(model);
+            }
         }
 
         public ActionResult AddClubOwner()

@@ -5,12 +5,90 @@
 
 <div class="row">
     <div class="col-md-12">
-        <h3 class="marginTop40"><a href="@Url.Action("Index")">Races</a>&emsp;>&emsp;Racers</h3>
+        <div class="row">
+            <div class="col-xs-8">
+                <h3 style="display:inline-block;" class="marginTop40"><a href="@Url.Action("Index")">Races</a>&emsp;>&emsp;Racers</h3>
 
-        @if (Model.Count() > 0)
-        {
-            <a target="_blank" class="btn btn-xs btn-warning" href="@Url.Action("PrintQRAll", new { id = Model.FirstOrDefault().RaceId })">Print All QR Codes</a>
+                @if (Model.Count() > 0)
+                {
+                    <a target="_blank" style="margin-bottom:6px; margin-left:6px;" class="btn btn-xs btn-warning" href="@Url.Action("PrintQRAll", new { id = Model.FirstOrDefault().RaceId })">Print All QR Codes</a>
+                }
+            </div>
+            <div class="col-xs-4">
+                <input class="all-search form-control pull-right" style="margin-top:38px;" placeholder="Search ..." />
+            </div>
+        </div>
+        <hr />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <strong>Race Name:</strong>
+        @if (ViewBag.RaceName != null) {
+            <text>@ViewBag.RaceName</text>
         }
+    </div>
+
+    <div class="col-md-4">
+        <strong>Release Point:</strong>
+        @if (ViewBag.ReleasePointName != null)
+        {
+            <text>@ViewBag.ReleasePointName</text>
+        }
+    </div>
+
+    <div class="col-md-4">
+        <strong>Coordinates:</strong>
+        @if (ViewBag.RaceCoordinates != null)
+        {
+            if (ViewBag.RaceCoordinates.Length >= 27)
+            {
+                <span title="@ViewBag.RaceCoordinates">@ViewBag.RaceCoordinates.Substring(0, 27)</span>
+            }
+            else
+            {
+                <span title="@ViewBag.RaceCoordinates">@ViewBag.RaceCoordinates</span>
+            }
+
+        }
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <strong>Start Date:</strong>
+        @if (ViewBag.RaceStartDate != null)
+        {
+            <text>@ViewBag.RaceStartDate</text>
+        }
+    </div>
+
+    <div class="col-md-4">
+        <strong>Cut-Off Date:</strong>
+        @if (ViewBag.RaceCutOffDate != null)
+        {
+            <text>@ViewBag.RaceCutOffDate</text>
+        }
+    </div>
+
+    <div class="col-md-4">
+        <strong>Total Entries:</strong>
+        @if (Model != null)
+        {
+            <text>@Model.Count()</text>
+        }
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <strong>Race Description:</strong>
+        @if (ViewBag.RaceDescription != null)
+        {
+            <text>@ViewBag.RaceDescription</text>
+        }
+
         <hr />
     </div>
 </div>
@@ -21,22 +99,33 @@
             <thead>
                 <tr>
                     <th>
+                        Rank
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model.Bird.BirdName)
                     </th>
                     <th>
                         End Coordinates
                     </th>
                     <th>
-                        Distance from Start
+                        Distance (Meters)
                     </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ReleaseDate)
-                    </th>
+                    @*
+                        <th>
+                            @Html.DisplayNameFor(model => model.ReleaseDate)
+                        </th>
+                    *@
                     <th>
                         @Html.DisplayNameFor(model => model.ArrivalDate)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Speed)
+                        Flight Duration
+                    </th>
+                    <th>
+                        Speed (Meters/Second)
                     </th>
                     <th>
                         Date Joined
@@ -46,9 +135,23 @@
             </thead>
 
             <tbody>
-                @foreach (var item in Model)
+                @{ 
+                    int i = 1;
+                }
+
+                @foreach (var item in Model.OrderByDescending(m=>m.Speed))
                 {
                     <tr>
+                        <td>
+                            <strong>@i</strong>
+
+                            @{ 
+                                i++;
+                            }
+                        </td>
+                        <td>
+                            @item.Bird.Owner.GivenName
+                        </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Bird.BirdName)
                         </td>
@@ -69,10 +172,21 @@
                             @Html.DisplayFor(modelItem => item.Distance)
                         </td>
 
-                        <td>
+                        @*<td>
                             @if (item.ReleaseDate != null)
-                          {
-                                @item.ReleaseDate.Value.ToString("MM-dd-yyyy hh:mmt")
+                              {
+                                    @item.ReleaseDate.Value.ToString("MM-dd-yyyy hh:mmt")
+                                }
+                                else
+                                {
+                                    <text>Pending</text>
+                                }
+                            </td>
+                        *@
+                        <td>
+                            @if (item.ArrivalDate != null)
+                            {
+                                @item.ArrivalDate.Value.ToString("MM-dd-yyyy hh:mmt")
                             }
                             else
                             {
@@ -80,13 +194,16 @@
                             }
                         </td>
                         <td>
-                            @if (item.ArrivalDate != null)
-                {
-                                @item.ArrivalDate.Value.ToString("MM-dd-yyyy hh:mmt")
-                            }
-                            else
+                            @if (item.Race != null)
                             {
-                                <text>Pending</text>
+                                if (item.ArrivalDate != null && item.Race.RaceStartDate != null)
+                                {
+                                    var flightTime = (item.ArrivalDate - item.Race.RaceStartDate).Value;
+
+                                    <span style="cursor:pointer;" title="@flightTime.Days days @flightTime.Hours hours @flightTime.Minutes minute @flightTime.Seconds seconds">
+                                        @Math.Round(flightTime.TotalMinutes, 4) minutes
+                                    </span>
+                                }
                             }
                         </td>
                         <td>
@@ -123,8 +240,9 @@
                 "pageLength": 10,
                 "dom": "<'table-window'<'table-responsive'rt>><'window-footer'<'col-md-6'i><'col-md-6'p>>",
                 "columnDefs": [
-                    { "orderable": false, "targets": 7 }
-                ]
+                    { "orderable": false, "targets": 9 }
+                ],
+                "order": [[ 7, "desc" ]]
             });
 
             $(".all-search").keyup(function () {
