@@ -7,132 +7,504 @@
         height:120px;
         width:100%;
         border-radius:5px;
-        border: 1px solid rgba(0,0,0,0.1);
+        padding:10px;
+        padding-left:15px;
+        margin-bottom:20px;
     }
 
     .expandable {
         padding: 14px;
+        padding-left:20px;
         border: 1px solid rgba(0,0,0,0.1);
         border-radius:5px;
         height: 500px;
         overflow-y:auto;
     }
+
+    .expandable h3{
+        font-weight:600;
+        margin-bottom:2px;
+    }
+
+    .expandable ol{
+        padding-inline-start:15px;
+        margin-bottom:35px;
+    }
+
+    .expandable ol li{
+        padding-inline-start:15px;
+        text-align:justify;
+    }
+
+    .cards strong{
+        font-size:1.4em;
+        color:rgba(255,255,255,1);
+        letter-spacing:0px;
+        display:block;
+        margin-bottom:10px;
+    }
+
+    .cards span{
+        font-size:2em;
+        color:rgba(255,255,255,1);
+        line-height:20px;
+        display:block;
+        z-index:3;
+    }
+
+    .icon-container{
+        position:absolute;
+        left:70%;
+        bottom:20%;
+    }
+
+    .icon-container i{
+        color:rgba(0,0,0,0.1);
+        font-size:3.5em;
+    }
 </style>
 
 @if (User.IsInRole("Admin"))
 {
-<div class="row" style="margin-top:60px;">
-    <div class="col-md-8">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="cards">
-                    Accounts
-                    <br />
-                    @ViewBag.Accounts
+    <div class="row" style="margin-top:60px;">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="cards" style="background-color:#ff5b5b;">
+                        <strong>Members</strong>
+                        @if (ViewBag.Accounts != null)
+                        {
+                            <span>@ViewBag.Accounts</span>
+                        }
+                        <div class="icon-container">
+                            <i class="icofont-people"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cards" style="background-color:#39d32d;">
+                        <strong>Races</strong>
+                        @if (@ViewBag.Races != null)
+                        {
+                            <span>@ViewBag.Races</span>
+                        }
+                        <div class="icon-container">
+                            <i class="icofont-flag-alt-2"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cards" style="background-color:#5893ff;">
+                        <strong>Birds</strong>
+                        @if (@ViewBag.Birds != null)
+                        {
+                            <span>@ViewBag.Birds</span>
+                        }
+                        <div class="icon-container">
+                            <i class="icofont-birds"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="cards">
-                    Races
-                    <br />
-                    @ViewBag.Races
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="cards" style="background-color:#e8d509;">
+                        <strong>Active Races</strong>
+                        @if (@ViewBag.ActiveRaces != null)
+                        {
+                            <span>@ViewBag.ActiveRaces</span>
+                        }
+                        <div class="icon-container">
+                            <i class="icofont-clock-time"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cards" style="background-color:#5bd7ff;">
+                        <strong>Active Racers</strong>
+                        @if (@ViewBag.ActiveRacers != null)
+                        {
+                            <span>@ViewBag.ActiveRacers</span>
+                        }
+                        <div class="icon-container">
+                            <i class="icofont-racer"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cards" style="background-color:#ff903d;">
+                        <strong>Last Finished Race</strong>
+                        @if (@ViewBag.LastRace != null)
+                        {
+                            <span style="font-size:1.2em !important; width:160px !important;">@ViewBag.LastRace</span>
+                        }
+                        <div class="icon-container">
+                            <i class="icofont-trophy"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="cards">
-                    Birds
-                    <br />
-                    @ViewBag.Birds
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="cards" style="background-color:#83e109">
+                        <strong>Server Time</strong>
+                        <span id="clock"></span>
+                        <div class="icon-container">
+                            <i class="icofont-wall-clock"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="cards">
-                    Active Races
-                    <br />
-                    @ViewBag.ActiveRaces
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="cards">
-                    Active Racers
-                    <br />
-                    @ViewBag.ActiveRacers
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="cards">
-                    Last Finished Race
-                    <br />
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="expandable">
-                    <h3>Club Owner</h3>
-                    <h4>Adding Club member</h4>
-                    <ul>
-                        <li>Press "Members"</li>
-                        <li>On the member page, press "Add Club Member</li>
-                        <li>On the add club member page, fill up the given name, middle name, last name, email, and password (password should contain at least 1 uppercase, 1 number, and 1 special character)</li>
-                        <li>Press "Add Club Member"</li>
-                    </ul>
-                    <h4>Add Club Member Loft Coordinates (Important)</h4>
-                    <ul>
-                        <li>Press "Edit Loft Coordinates"</li>
-                        <li>On the edit member loft coordinates page, fill up the latitude and longitude (you can use the map located at the left side of the page to select the latitude and longitude)</li>
-                        <li>Press "Save</li>
-                    </ul>
-                    <h4>Creating Release (Race Starting Point)</h4>
-                    <ul>
-                        <li>Press "'Release Points"</li>
-                        <li>On the release point page, press "Add Release Point"</li>
-                        <li>On the add release point page, fill up the point name, latitude, and longitude (you can use the map located at the left side of the page to select latitude and longitude</li>
-                        <li>Press "Add"</li>
-                    </ul>
-                    <h4>Creating Race</h4>
-                    <ul>
-                        <li>Press "Races"</li>
-                        <li>On the race page, press "Create Race"</li>
-                        <li>On the create race page, fill up the race name, release point (a marker will appear on the map after choosing a release point), race start date, race cut-off date, race description (optional), and race loading date</li>
-                        <li>Press "Create"</li>
-                    </ul>
-                    <h4>Printing QR Code</h4>
-                    <ul>
-                        <li>Press "Races"</li>
-                        <li>On the races page, choose the race that you want and press "Racers"</li>
-                        <li>On the races racer page, press "Print All QR Codes"</li>
-                        <li>Press "Print'</li>
-                    </ul>
-                    <h4>View Race Result during the Race</h4>
-                    <ul>
-                        <li>Press "Races"</li>
-                        <li>On the race page, choose the race that you want and press "Racers"</li>
-                    </ul>
-                </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="expandable">
+                        <h3>Club Owner</h3>
+                        <h4>Adding Club member</h4>
+                        <ol>
+                            <li>Press "Members"</li>
+                            <li>On the member page, press "Add Club Member</li>
+                            <li>On the add club member page, fill up the given name, middle name, last name, email, and password (password should contain at least 1 uppercase, 1 number, and 1 special character)</li>
+                            <li>Press "Add Club Member"</li>
+                        </ol>
+                        <h4>Add Club Member Loft Coordinates (Important)</h4>
+                        <ol>
+                            <li>Press "Edit Loft Coordinates"</li>
+                            <li>On the edit member loft coordinates page, fill up the latitude and longitude (you can use the map located at the left side of the page to select the latitude and longitude)</li>
+                            <li>Press "Save</li>
+                        </ol>
+                        <h4>Creating Release (Race Starting Point)</h4>
+                        <ol>
+                            <li>Press "'Release Points"</li>
+                            <li>On the release point page, press "Add Release Point"</li>
+                            <li>On the add release point page, fill up the point name, latitude, and longitude (you can use the map located at the left side of the page to select latitude and longitude</li>
+                            <li>Press "Add"</li>
+                        </ol>
+                        <h4>Creating Race</h4>
+                        <ol>
+                            <li>Press "Races"</li>
+                            <li>On the race page, press "Create Race"</li>
+                            <li>On the create race page, fill up the race name, release point (a marker will appear on the map after choosing a release point), race start date, race cut-off date, race description (optional), and race loading date</li>
+                            <li>Press "Create"</li>
+                        </ol>
+                        <h4>Printing QR Code</h4>
+                        <ol>
+                            <li>Press "Races"</li>
+                            <li>On the races page, choose the race that you want and press "Racers"</li>
+                            <li>On the races racer page, press "Print All QR Codes"</li>
+                            <li>Press "Print'</li>
+                        </ol>
+                        <h4>View Race Result during the Race</h4>
+                        <ol>
+                            <li>Press "Races"</li>
+                            <li>On the race page, choose the race that you want and press "Racers"</li>
+                        </ol>
+                    </div>
                 
+                </div>
             </div>
         </div>
     </div>
-</div>
-}
-
-@if (User.IsInRole("Club Member"))
-{
-
 }
 
 @if (User.IsInRole("Club Owner"))
 {
+    <div class="row" style="margin-top:60px;">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="cards" style="background-color:#ff5b5b;">
+                        <strong>Members</strong>
+                        @if (ViewBag.Members != null)
+                        {
+                            <span>@ViewBag.Members</span>
+                        }
+                        <div class="icon-container">
+                            <i class="icofont-people"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cards" style="background-color:#39d32d;">
+                        <strong>Races</strong>
+                        @if (@ViewBag.Races != null)
+                        {
+                            <span>@ViewBag.Races</span>
+                        }
+                        <div class="icon-container">
+                            <i class="icofont-flag-alt-2"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cards" style="background-color:#5893ff;">
+                        <strong>Birds</strong>
+                        @if (@ViewBag.Birds != null)
+                        {
+                            <span>@ViewBag.Birds</span>
+                        }
+                        <div class="icon-container">
+                            <i class="icofont-birds"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="cards" style="background-color:#e8d509;">
+                        <strong>Active Races</strong>
+                        @if (@ViewBag.ActiveRaces != null)
+                        {
+                            <span>@ViewBag.ActiveRaces</span>
+                        }
+                        <div class="icon-container">
+                            <i class="icofont-clock-time"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cards" style="background-color:#5bd7ff;">
+                        <strong>Active Racers</strong>
+                        @if (@ViewBag.ActiveRacers != null)
+                        {
+                            <span>@ViewBag.ActiveRacers</span>
+                        }
+                        <div class="icon-container">
+                            <i class="icofont-racer"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cards" style="background-color:#ff903d;">
+                        <strong>Last Finished Race</strong>
+                        @if (@ViewBag.LastRace != null)
+                        {
+                            <span style="font-size:1.2em !important; width:160px !important;">@ViewBag.LastRace</span>
+                        }
+                        <div class="icon-container">
+                            <i class="icofont-trophy"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="cards" style="background-color:#83e109">
+                        <strong>Server Time</strong>
+                        <span id="clock"></span>
+                        <div class="icon-container">
+                            <i class="icofont-wall-clock"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="expandable">
+                        <h3>Club Owner</h3>
+                        <h4>Adding Club member</h4>
+                        <ol>
+                            <li>Press "Members"</li>
+                            <li>On the member page, press "Add Club Member</li>
+                            <li>On the add club member page, fill up the given name, middle name, last name, email, and password (password should contain at least 1 uppercase, 1 number, and 1 special character)</li>
+                            <li>Press "Add Club Member"</li>
+                        </ol>
+                        <h4>Add Club Member Loft Coordinates (Important)</h4>
+                        <ol>
+                            <li>Press "Edit Loft Coordinates"</li>
+                            <li>On the edit member loft coordinates page, fill up the latitude and longitude (you can use the map located at the left side of the page to select the latitude and longitude)</li>
+                            <li>Press "Save</li>
+                        </ol>
+                        <h4>Creating Release (Race Starting Point)</h4>
+                        <ol>
+                            <li>Press "'Release Points"</li>
+                            <li>On the release point page, press "Add Release Point"</li>
+                            <li>On the add release point page, fill up the point name, latitude, and longitude (you can use the map located at the left side of the page to select latitude and longitude</li>
+                            <li>Press "Add"</li>
+                        </ol>
+                        <h4>Creating Race</h4>
+                        <ol>
+                            <li>Press "Races"</li>
+                            <li>On the race page, press "Create Race"</li>
+                            <li>On the create race page, fill up the race name, release point (a marker will appear on the map after choosing a release point), race start date, race cut-off date, race description (optional), and race loading date</li>
+                            <li>Press "Create"</li>
+                        </ol>
+                        <h4>Printing QR Code</h4>
+                        <ol>
+                            <li>Press "Races"</li>
+                            <li>On the races page, choose the race that you want and press "Racers"</li>
+                            <li>On the races racer page, press "Print All QR Codes"</li>
+                            <li>Press "Print'</li>
+                        </ol>
+                        <h4>View Race Result during the Race</h4>
+                        <ol>
+                            <li>Press "Races"</li>
+                            <li>On the race page, choose the race that you want and press "Racers"</li>
+                        </ol>
+                    </div>
 
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (User.IsInRole("Member"))
+{
+    <div class="row" style="margin-top:60px;">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="cards" style="background-color:#5893ff;">
+                        <strong>Birds</strong>
+                        @if (@ViewBag.Birds != null)
+                        {
+                            <span>@ViewBag.Birds</span>
+                        }
+                        <div class="icon-container">
+                            <i class="icofont-birds"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cards" style="background-color:#39d32d;">
+                        <strong>Races Participated</strong>
+                        @if (@ViewBag.RacesParticipated != null)
+                        {
+                            <span>@ViewBag.RacesParticipated</span>
+                        }
+                        <div class="icon-container">
+                            <i class="icofont-flag-alt-2"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cards" style="background-color:#5bd7ff;">
+                        <strong>Active Racers</strong>
+                        @if (@ViewBag.ActiveRacers != null)
+                        {
+                            <span>@ViewBag.ActiveRacers</span>
+                        }
+                        <div class="icon-container">
+                            <i class="icofont-racer"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="cards" style="background-color:#e8d509;">
+                        <strong>Active Races</strong>
+                        @if (@ViewBag.RacesWon != null)
+                        {
+                            <span>@ViewBag.RacesWon</span>
+                        }
+                        <div class="icon-container">
+                            <i class="icofont-trophy"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cards" style="background-color:#83e109">
+                        <strong>Server Time</strong>
+                        <span id="clock"></span>
+                        <div class="icon-container">
+                            <i class="icofont-wall-clock"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="expandable">
+                        <h3>Club Member</h3>
+                        <h4>Add Racers (Pigeon Band Number)</h4>
+                        <ol>
+                            <li>Press "Manage Racers"</li>
+                            <li>On the manage racers page, press "Add Racer"</li>
+                            <li>On the add racer page, fill up the band number</li>
+                            <li>Press "Add"</li>
+                        </ol>
+                        <h4>Edit Racer</h4>
+                        <ol>
+                            <li>Press "Manage Racers"</li>
+                            <li>On the manage racers page, look for the racer (pigeon band number) that you want to edit and press "Edit"</li>
+                            <li>On the edit racer page, edit the band number of the racer</li>
+                            <li>Press "Save"</li>
+                        </ol>
+                        <h4>Delete Racer</h4>
+                        <ol>
+                            <li>Press "Manage Racers"</li>
+                            <li>On the racers page, look for the racer (pigeon band number) that you want to delete and press "Delete"</li>
+                            <li>On the delete racer page, you will be ask if you really want to delete the selected racer (pigeon band number)</li>
+                            <li>Press "Delete"</li>
+                        </ol>
+                        <h4>View Race</h4>
+                        <ol>
+                            <li>Press "Races"</li>
+                        </ol>
+                        <h4>Join Race</h4>
+                        <ol>
+                            <li>Press "Races"</li>
+                            <li>On the races page, choose the race that you want and press "Join"</li>
+                            <li>On the join race page, select the racer(Band number of the pigeon) that you want to enter (the join race page will also display the information about the race like rate name, race description, and the distance between the release/liberation point and the club member's loft.)</li>
+                            <li>Press "Join'</li>
+                        </ol>
+                        <h4>Clock Pigeon Speed</h4>
+                        <ol>
+                            <li>To clock the pigeon speed, a QR code will be used.</li>
+                            <li>Catch the pigeon</li>
+                            <li>Scan the QR code from pigeon's legs or remove the QR code and then scan</li>
+                            <li>Press the link</li>
+                            <li>Done</li>
+                        </ol>
+                        <h4>View Race Result</h4>
+                        <ol>
+                            <li>Press "Races"</li>
+                            <li>On the races page, choose the race that you want and press "Result"</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
 @section scripts{
     <script>
-        
+        function updateClock() {
+            var currentTime = new Date();
+            // Operating System Clock Hours for 12h clock
+            var currentHoursAP = currentTime.getHours();
+            // Operating System Clock Hours for 24h clock
+            var currentHours = currentTime.getHours();
+            // Operating System Clock Minutes
+            var currentMinutes = currentTime.getMinutes();
+            // Operating System Clock Seconds
+            var currentSeconds = currentTime.getSeconds();
+            // Adding 0 if Minutes & Seconds is More or Less than 10
+            currentMinutes = (currentMinutes < 10 ? "0" : "") + currentMinutes;
+            currentSeconds = (currentSeconds < 10 ? "0" : "") + currentSeconds;
+            // Picking "AM" or "PM" 12h clock if time is more or less than 12
+            var timeOfDay = (currentHours < 12) ? "AM" : "PM";
+            // transform clock to 12h version if needed
+            currentHoursAP = (currentHours > 12) ? currentHours - 12 : currentHours;
+            // transform clock to 12h version after mid night
+            currentHoursAP = (currentHoursAP == 0) ? 12 : currentHoursAP;
+            // display first 24h clock and after line break 12h version
+            // var currentTimeString = currentHours + ":" + currentMinutes + ":" + currentSeconds + "" + "<br>" + currentHoursAP + ":" + currentMinutes + ":" + currentSeconds + " " + timeOfDay;
+            var currentTimeString = currentHoursAP + ":" + currentMinutes + ":" + currentSeconds + " " + timeOfDay;
+            // print clock js in div #clock.
+            $("#clock").html(currentTimeString);
+        }
+        $(document).ready(function () {
+            setInterval(updateClock, 1000);
+        });
     </script>    
 }

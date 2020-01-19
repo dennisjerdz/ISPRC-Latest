@@ -631,3 +631,12 @@ C:\Users\JERDI2604\Documents\Visual Studio 2017\Projects\ISPRC\ISPRC\obj\Release
 C:\Users\JERDI2604\Documents\Visual Studio 2017\Projects\ISPRC\ISPRC\obj\Release\ISPRC.csproj.CopyComplete
 C:\Users\JERDI2604\Documents\Visual Studio 2017\Projects\ISPRC\ISPRC\obj\Release\ISPRC.dll
 C:\Users\JERDI2604\Documents\Visual Studio 2017\Projects\ISPRC\ISPRC\obj\Release\ISPRC.pdb
+C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC\ISPRC\obj\Release\ISPRC.csprojResolveAssemblyReference.cache
+C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC\ISPRC\obj\Release\ISPRC.Migrations.ReleasepointsClubs.resources
+C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC\ISPRC\obj\Release\ISPRC.Migrations.RaceLoadingdateandDescription.resources
+C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC\ISPRC\obj\Release\ISPRC.Migrations.ClubIdforRaces.resources
+C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC\ISPRC\obj\Release\ISPRC.Migrations.stringcoordinatesforuser.resources
+C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC\ISPRC\obj\Release\ISPRC.Migrations.requiredadjustments.resources
+C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC\ISPRC\obj\Release\ISPRC.Migrations.dontknowwhyneed.resources
+C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC\ISPRC\obj\Release\ISPRC.Migrations.clubspecificreleasepoint.resources
+C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC\ISPRC\obj\Release\ISPRC.Migrations.activereleasepoints.resources
