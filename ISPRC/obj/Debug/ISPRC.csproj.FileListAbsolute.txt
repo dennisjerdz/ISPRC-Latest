@@ -376,3 +376,4 @@ C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC\ISPRC\obj\Debug\ISPRC
 C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC\ISPRC\obj\Debug\ISPRC.Migrations.dontknowwhyneed.resources
 C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC\ISPRC\obj\Debug\ISPRC.Migrations.clubspecificreleasepoint.resources
 C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC\ISPRC\obj\Debug\ISPRC.Migrations.activereleasepoints.resources
+C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC\ISPRC\obj\Debug\ISPRC.Migrations.SubscriptionTable.resources

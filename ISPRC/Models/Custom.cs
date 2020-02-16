@@ -185,4 +185,17 @@ namespace ISPRC.Models
         [ForeignKey("ClubId")]
         public virtual Club Club { get; set; }
     }
+
+    public class Subscription
+    {
+        public int SubscriptionId { get; set; }
+        public string SubscriptionDescription { get; set; }
+        public string Payment { get; set; }
+        public DateTime  DateCreated { get; set; }
+        public DateTime EndOfSubscriptionDate { get; set; }
+
+        public string UserId { get; set; }
+        [ForeignKey("UserId")]
+        public virtual ApplicationUser User { get; set; }
+    }
 }

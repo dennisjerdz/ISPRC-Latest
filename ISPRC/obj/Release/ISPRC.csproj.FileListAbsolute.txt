@@ -640,3 +640,4 @@ C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC\ISPRC\obj\Release\ISP
 C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC\ISPRC\obj\Release\ISPRC.Migrations.dontknowwhyneed.resources
 C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC\ISPRC\obj\Release\ISPRC.Migrations.clubspecificreleasepoint.resources
 C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC\ISPRC\obj\Release\ISPRC.Migrations.activereleasepoints.resources
+C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\ISPRC\ISPRC\obj\Release\ISPRC.Migrations.SubscriptionTable.resources

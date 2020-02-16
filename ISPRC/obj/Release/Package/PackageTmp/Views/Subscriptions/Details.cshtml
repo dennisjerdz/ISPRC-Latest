@@ -1,0 +1,66 @@
+﻿@model ISPRC.Models.Subscription
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>Subscription</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.User.GivenName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.User.GivenName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.SubscriptionDescription)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.SubscriptionDescription)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Payment)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Payment)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.DateCreated)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.EndOfSubscriptionDate)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.EndOfSubscriptionDate)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.SubscriptionId }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

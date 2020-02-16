@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ISPRC.Models.AdminAccountModel>
+﻿@model ISPRC.Models.ApplicationUser
 @{
     ViewBag.Title = "Index";
 }
@@ -6,15 +6,7 @@
     <div class="col-md-12">
         <div class="row">
             <div class="col-xs-8">
-                @if (User.IsInRole("Club Owner"))
-                {
-                    <h3 class="marginTop40">Accounts&emsp;>&emsp;<a href="@Url.Action("AddMember")">Add Member</a></h3>
-                }
-
-                @if (User.IsInRole("Admin"))
-                {
-                    <h3 class="marginTop40">Accounts&emsp;>&emsp;<a href="@Url.Action("AddClubOwner")">Add Club Owner</a></h3>
-                }
+                <h3 class="marginTop40"><a href="@Url.Action("Accounts")">Accounts</a>&emsp;>&emsp;@Model.GivenName&emsp;>&emsp;<a href="@Url.Action("AddSubscription", new { id = Model.Id })">Add Subscription</a></h3>
             </div>
             <div class="col-xs-4">
                 <input class="all-search form-control pull-right" style="margin-top:38px;" placeholder="Search ..." />
@@ -29,68 +21,51 @@
             <thead>
                 <tr>
                     <th>
-                        Club
+                        Description
                     </th>
                     <th>
-                        Name
+                        Payment Amount
                     </th>
                     <th>
-                        Email
+                        Date Created
                     </th>
                     <th>
-                        Role
+                        End of Subscription Date
                     </th>
                     <th>
-                        Status
+                        Account Status
                     </th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.Subscriptions)
                 {
                     <tr>
                         <td>
-                            @item.ClubName
+                            @item.SubscriptionDescription
                         </td>
                         <td>
-                            @item.Name
+                            @item.Payment
                         </td>
                         <td>
-                            @item.Email
+                            @item.DateCreated
                         </td>
                         <td>
-                            @item.Role
+                            @item.EndOfSubscriptionDate
                         </td>
                         <td>
-                            @if (item.Locked)
+                            @if (item.EndOfSubscriptionDate > DateTime.UtcNow.AddHours(8))
                             {
                                 <span style="color:#b02f2f;">Locked</span>
-                            }else
+                            }
+                            else
                             {
                                 <span style="color:#00ff21;">Active</span>
                             }
                         </td>
                         <td>
-                            @if (User.Identity.Name == item.Email)
-                            {
-
-                            }
-                            else
-                            {
-                                if (item.Locked)
-                                {
-                                    <a href="@Url.Action("Unlock",new { id=item.Id })" class="btn btn-xs btn-success">Unlock</a>
-                                }
-                                else
-                                {
-                                    <a href="@Url.Action("Lock",new { id=item.Id })" class="btn btn-xs btn-danger">Lock</a>
-                                }
-                            }
-
-                            <a class="btn btn-xs btn-primary" href="@Url.Action("EditLoftCoordinates", new { id=item.Id })">Edit Loft Coordinates</a>
-
-                            <a class="btn btn-xs btn-info" href="@Url.Action("Subscriptions", new { id=item.Id })">Subscriptions</a>
+                            @Html.ActionLink("Delete Record","DeleteSubscription",new { @id = item.SubscriptionId }, new { @class="btn btn-xs btn-danger" })
                         </td>
                     </tr>
                 }

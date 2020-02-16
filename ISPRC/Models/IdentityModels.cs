@@ -22,6 +22,7 @@ namespace ISPRC.Models
         public string LoftLongitudeCoordinate { get; set; }
 
         public virtual List<Bird> Birds { get; set; }
+        public virtual List<Subscription> Subscriptions { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -57,6 +58,7 @@ namespace ISPRC.Models
         }
 
         public System.Data.Entity.DbSet<ISPRC.Models.Club> Clubs { get; set; }
+        public DbSet<Subscription> Subscriptions { get; set; }
     }
 
     /* supposedly custom claim

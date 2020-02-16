@@ -205,6 +205,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RacesController.cs" />
     <Compile Include="Controllers\ReleasePointsController.cs" />
+    <Compile Include="Controllers\SubscriptionsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -259,6 +260,10 @@
     <Compile Include="Migrations\201912091553275_active release points.cs" />
     <Compile Include="Migrations\201912091553275_active release points.Designer.cs">
       <DependentUpon>201912091553275_active release points.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002161045422_SubscriptionTable.cs" />
+    <Compile Include="Migrations\202002161045422_SubscriptionTable.Designer.cs">
+      <DependentUpon>202002161045422_SubscriptionTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -386,6 +391,13 @@
     <Content Include="Views\Account\AddMember.cshtml" />
     <Content Include="Views\Races\PrintQR.cshtml" />
     <Content Include="Views\Races\PrintQRAll.cshtml" />
+    <Content Include="Views\Subscriptions\Create.cshtml" />
+    <Content Include="Views\Subscriptions\Delete.cshtml" />
+    <Content Include="Views\Subscriptions\Details.cshtml" />
+    <Content Include="Views\Subscriptions\Edit.cshtml" />
+    <Content Include="Views\Subscriptions\Index.cshtml" />
+    <Content Include="Views\Account\Subscriptions.cshtml" />
+    <Content Include="Views\Account\AddSubscription.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -437,6 +449,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912091553275_active release points.resx">
       <DependentUpon>201912091553275_active release points.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002161045422_SubscriptionTable.resx">
+      <DependentUpon>202002161045422_SubscriptionTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

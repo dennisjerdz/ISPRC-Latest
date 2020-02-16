@@ -80,6 +80,9 @@ namespace ISPRC.Controllers
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            
+            Subscription subscription = db.Subscriptions.Where(s => s.User.Email == model.Email).OrderByDescending(s => s.EndOfSubscriptionDate).FirstOrDefault();
+            bool subscriptionExpired = false;
             switch (result)
             {
                 case SignInStatus.Success:
@@ -89,6 +92,16 @@ namespace ISPRC.Controllers
                     {
                         goto case SignInStatus.LockedOut;
                     }
+
+                    if (subscription != null)
+                    {
+                        if(DateTime.UtcNow.AddHours(8) > subscription.EndOfSubscriptionDate)
+                        {
+                            subscriptionExpired = true;
+                            goto default;
+                        }
+                    }
+
                     return RedirectToLocal(returnUrl);
 
                 case SignInStatus.LockedOut:
@@ -98,6 +111,10 @@ namespace ISPRC.Controllers
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
+                    if (subscriptionExpired)
+                    {
+                        ModelState.AddModelError("", "Your subscription expired at " + subscription.EndOfSubscriptionDate + ". Please contact your Club Owner to renew.");
+                    }
                     return View(model);
             }
         }
@@ -721,6 +738,68 @@ namespace ISPRC.Controllers
             // If we got this far, something failed, redisplay form
             ViewBag.ClubId = new SelectList(db.Clubs, "ClubId", "ClubName");
             return View(model);
+        }
+
+        public ActionResult Subscriptions(string id)
+        {
+            var user = db.Users.FirstOrDefault(u => u.Id == id);
+            if (user != null)
+            {
+                return View(user);
+            }
+            else
+            {
+                return new HttpStatusCodeResult(404);
+            }
+        }
+
+        public ActionResult AddSubscription(string id)
+        {
+            var user = db.Users.FirstOrDefault(u => u.Id == id);
+            if (user != null)
+            {
+                Subscription s = new Subscription();
+                s.User = user;
+                s.UserId = user.Id;
+                s.SubscriptionDescription = DateTime.UtcNow.AddHours(8).Month.ToString()+"-"+ DateTime.UtcNow.AddHours(8).Year.ToString()+"-Subscription";
+
+                return View(s);
+            }
+            else
+            {
+                return new HttpStatusCodeResult(404);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult AddSubscription(Subscription s)
+        {
+            s.DateCreated = DateTime.UtcNow.AddHours(8);
+
+            if (ModelState.IsValid)
+            {
+                db.Subscriptions.Add(s);
+                db.SaveChanges();
+                return RedirectToAction("Subscriptions", new { id = s.UserId });
+            }
+            else
+            {
+                return View(s);
+            }
+        }
+
+        public ActionResult DeleteSubscription(int id)
+        {
+            var subscription = db.Subscriptions.FirstOrDefault(s=>s.SubscriptionId == id);
+            if (subscription != null)
+            {
+                string userId = subscription.UserId;
+                db.Subscriptions.Remove(subscription);
+                db.SaveChanges();
+                return RedirectToAction("Subscriptions", new { id = userId });
+            }
+
+            return RedirectToAction("Accounts");
         }
     }
 }
