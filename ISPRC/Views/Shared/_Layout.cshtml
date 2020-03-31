@@ -29,32 +29,58 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        @if (User.IsInRole("Admin"))
+                        @if (User.Identity.Subscription() == "Expired")
                         {
-                            <li>@Html.ActionLink("Accounts", "Accounts", "Account")</li>
-                            <li>@Html.ActionLink("Clubs", "Index", "Clubs")</li>
+                            if (User.IsInRole("Member"))
+                            {
+                                <li>@Html.ActionLink("Races", "Index", "Races")</li>
+                            }
+                            if (User.IsInRole("Member"))
+                            {
+                                <li>@Html.ActionLink("Manage Racers", "Index", "Birds")</li>
+                            }
                         }
-                        @if (User.IsInRole("Club Owner"))
+                        @if (User.Identity.Subscription() == "Valid")
                         {
-                            <li>@Html.ActionLink("Members", "Accounts", "Account")</li>
-                        }
-                        @if (User.IsInRole("Club Owner") || User.IsInRole("Admin"))
-                        {
-                            <li>@Html.ActionLink("Release Points", "Index", "ReleasePoints")</li>
-                        }
-                        @if (User.IsInRole("Club Owner") || User.IsInRole("Admin") || User.IsInRole("Member"))
-                        {
-                            <li>@Html.ActionLink("Races", "Index", "Races")</li>
-                        }
-                        @if (User.IsInRole("Member"))
-                        {
-                            <li>@Html.ActionLink("Manage Racers", "Index", "Birds")</li>
+                            if (User.IsInRole("Club Owner"))
+                            {
+                                <li>@Html.ActionLink("Members", "Accounts", "Account")</li>
+                            }
+                            if (User.IsInRole("Admin"))
+                            {
+                                <li>@Html.ActionLink("Accounts", "Accounts", "Account")</li>
+                                <li>@Html.ActionLink("Clubs", "Index", "Clubs")</li>
+                            }
+                            if (User.IsInRole("Club Owner") || User.IsInRole("Admin"))
+                            {
+                                <li>@Html.ActionLink("Release Points", "Index", "ReleasePoints")</li>
+                            }
+                            if (User.IsInRole("Club Owner") || User.IsInRole("Admin") || User.IsInRole("Member"))
+                            {
+                                <li>@Html.ActionLink("Races", "Index", "Races")</li>
+                            }
+                            if (User.IsInRole("Member"))
+                            {
+                                <li>@Html.ActionLink("Manage Racers", "Index", "Birds")</li>
+                            }
                         }
                     </ul>
                     @Html.Partial("_LoginPartial")
                 </div>
             </div>
         </div>
+        @if (User.Identity.Subscription() == "Expired")
+        {
+            <div class="container-fluid">
+                <div class="row" style="margin-right:unset !important; padding-top:11px;padding-bottom:11px; background-color:#f56363;">
+                    <div class="container">
+                        <div class="col-md-12">
+                            <h5 href="#" style="color:white; font-weight:bold;">Subscription has expired, certain features are disabled.</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
         <div class="container">
             @RenderBody()
             <hr />

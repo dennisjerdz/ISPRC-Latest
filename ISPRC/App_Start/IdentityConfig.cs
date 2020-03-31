@@ -106,4 +106,21 @@ namespace ISPRC
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
     }
+
+    public static class IdentityExtensions
+    {
+        public static string Subscription(this System.Security.Principal.IIdentity identity)
+        {
+            var subscription = ((ClaimsIdentity)identity).FindFirst("Subscription");
+            if (subscription != null)
+            {
+                return subscription.Value;
+            }
+            else
+            {
+                return "Valid";
+            }
+            
+        }
+    }
 }

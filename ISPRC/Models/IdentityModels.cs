@@ -6,6 +6,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using System.Security.Principal;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System;
 
 namespace ISPRC.Models
 {
@@ -30,7 +32,20 @@ namespace ISPRC.Models
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             
             // Add custom user claims here
-            // userIdentity.AddClaim(new Claim("UserId", Id));
+            userIdentity.AddClaim(new Claim("UserId", Id));
+
+            var subscription = this.Subscriptions.OrderByDescending(s => s.EndOfSubscriptionDate).FirstOrDefault();
+            if (subscription != null)
+            {
+                if (DateTime.UtcNow.AddHours(8) > subscription.EndOfSubscriptionDate)
+                {
+                    userIdentity.AddClaim(new Claim("Subscription", "Expired"));
+                }
+                else
+                {
+                    userIdentity.AddClaim(new Claim("Subscription", "Valid"));
+                }
+            }
 
             return userIdentity;
         }

@@ -81,8 +81,8 @@ namespace ISPRC.Controllers
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
             
-            Subscription subscription = db.Subscriptions.Where(s => s.User.Email == model.Email).OrderByDescending(s => s.EndOfSubscriptionDate).FirstOrDefault();
-            bool subscriptionExpired = false;
+            // Subscription subscription = db.Subscriptions.Where(s => s.User.Email == model.Email).OrderByDescending(s => s.EndOfSubscriptionDate).FirstOrDefault();
+            // bool subscriptionExpired = false;
             switch (result)
             {
                 case SignInStatus.Success:
@@ -93,14 +93,21 @@ namespace ISPRC.Controllers
                         goto case SignInStatus.LockedOut;
                     }
 
+                    /*
                     if (subscription != null)
                     {
-                        if(DateTime.UtcNow.AddHours(8) > subscription.EndOfSubscriptionDate)
+                        if (DateTime.UtcNow.AddHours(8) > subscription.EndOfSubscriptionDate)
                         {
                             subscriptionExpired = true;
+
+                            if (!User.IsInRole("Member"))
+                            {
+                                return RedirectToAction("Index","Home",new { id="SubscriptionExpired" });
+                            }
+
                             goto default;
                         }
-                    }
+                    } */
 
                     return RedirectToLocal(returnUrl);
 
@@ -111,10 +118,10 @@ namespace ISPRC.Controllers
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
-                    if (subscriptionExpired)
+                    /*if (subscriptionExpired)
                     {
                         ModelState.AddModelError("", "Your subscription expired at " + subscription.EndOfSubscriptionDate + ". Please contact your Club Owner to renew.");
-                    }
+                    }*/
                     return View(model);
             }
         }
@@ -183,15 +190,15 @@ namespace ISPRC.Controllers
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, GivenName = model.GivenName, MiddleName = model.MiddleName, LastName = model.LastName };
                 var result = await UserManager.CreateAsync(user, model.Password);
 
-                var roleStore = new RoleStore<IdentityRole>(db);
-                var roleManager = new RoleManager<IdentityRole>(roleStore);
-
-                var userStore = new UserStore<ApplicationUser>(db);
-                var userManager = new UserManager<ApplicationUser>(userStore);
-                userManager.AddToRole(user.Id, "Member");
-
                 if (result.Succeeded)
                 {
+                    var roleStore = new RoleStore<IdentityRole>(db);
+                    var roleManager = new RoleManager<IdentityRole>(roleStore);
+
+                    var userStore = new UserStore<ApplicationUser>(db);
+                    var userManager = new UserManager<ApplicationUser>(userStore);
+                    userManager.AddToRole(user.Id, "Member");
+
                     var newUser = db.Users.FirstOrDefault(u => u.Email == user.Email);
                     newUser.GivenName = model.GivenName;
                     newUser.MiddleName = model.MiddleName;

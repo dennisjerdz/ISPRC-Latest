@@ -15,6 +15,7 @@ namespace ISPRC.Controllers
         public ActionResult Index()
         {
             DateTime now = DateTime.UtcNow.AddHours(8);
+            string userId = User.Identity.GetUserId();
 
             if (User.IsInRole("Admin"))
             {
@@ -28,7 +29,6 @@ namespace ISPRC.Controllers
 
             if (User.IsInRole("Club Owner"))
             {
-                string userId = User.Identity.GetUserId();
                 ApplicationUser user = db.Users.FirstOrDefault(u => u.Id == userId);
                 int clubId = user.ClubId.Value;
 
@@ -42,7 +42,6 @@ namespace ISPRC.Controllers
 
             if (User.IsInRole("Member"))
             {
-                string userId = User.Identity.GetUserId();
                 ApplicationUser user = db.Users.FirstOrDefault(u => u.Id == userId);
 
                 ViewBag.Birds = db.Birds.Where(x => x.OwnerId == userId).Count();
@@ -64,6 +63,15 @@ namespace ISPRC.Controllers
                 }
 
                 ViewBag.RaceWon = won;
+            }
+
+            Subscription subscription = db.Subscriptions.Where(s => s.User.Id == userId).OrderByDescending(s => s.EndOfSubscriptionDate).FirstOrDefault();
+            if (subscription != null)
+            {
+                if (DateTime.UtcNow.AddHours(8) > subscription.EndOfSubscriptionDate)
+                {
+                    ViewBag.Subscription = subscription.EndOfSubscriptionDate;
+                }
             }
 
             return View();

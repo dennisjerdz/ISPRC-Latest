@@ -146,6 +146,22 @@
             </div>
             <div class="row">
                 <div class="col-md-4">
+                    <div class="cards" style="background-color:#ff5a5a">
+                        <strong>Subscription</strong>
+                        @if (@ViewBag.Subscription != null)
+                        {
+                            <span style="font-size:1.2em !important; width:160px !important;">@ViewBag.Subscription</span>
+                        }
+                        else
+                        {
+                            <span style="font-size:1.2em !important; width:160px !important;">No Subscription Expiry; Valid</span>
+                        }
+                        <div class="icon-container">
+                            <i class="icofont-calendar"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
                     <div class="cards" style="background-color:#83e109">
                         <strong>Server Time</strong>
                         <span id="clock"></span>
@@ -396,6 +412,15 @@
             </div>
             <div class="row">
                 <div class="col-md-4">
+                    <div class="cards" style="background-color:#83e109">
+                        <strong>Server Time</strong>
+                        <span id="clock"></span>
+                        <div class="icon-container">
+                            <i class="icofont-wall-clock"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
                     <div class="cards" style="background-color:#e8d509;">
                         <strong>Active Races</strong>
                         @if (@ViewBag.RacesWon != null)
@@ -404,15 +429,6 @@
                         }
                         <div class="icon-container">
                             <i class="icofont-trophy"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="cards" style="background-color:#83e109">
-                        <strong>Server Time</strong>
-                        <span id="clock"></span>
-                        <div class="icon-container">
-                            <i class="icofont-wall-clock"></i>
                         </div>
                     </div>
                 </div>

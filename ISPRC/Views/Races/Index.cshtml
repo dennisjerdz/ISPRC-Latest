@@ -118,7 +118,14 @@
                             {
                                 if (User.IsInRole("Member"))
                                 {
-                                    <a class="btn btn-success btn-xs" href="@Url.Action("Join", new { id=item.RaceId })">Join</a>
+                                    if (User.Identity.Subscription() == "Expired")
+                                    {
+                                        <a class="btn btn-success btn-xs" title="Subscription has expired, cannot join race." disabled href="@Url.Action("Join", new { id=item.RaceId })">Join</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-success btn-xs" href="@Url.Action("Join", new { id=item.RaceId })">Join</a>
+                                    }
                                 }
                             }
 
