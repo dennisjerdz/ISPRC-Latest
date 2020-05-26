@@ -1,17 +1,64 @@
-﻿@{
+﻿@model ISPRC.Models.ContactModel
+@{
     ViewBag.Title = "Contact";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="marginTop40"><a href="@Url.Action("Index")">Home</a>&emsp;>&emsp;Contact</h3>
+        <hr />
+    </div>
 
-<address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+    @if (ViewBag.Sent != null)
+    {
+        <div class="col-md-12">
+            <div class="alert alert-success">
+                @ViewBag.Sent
+            </div>
+        </div>
+    }
+    
+</div>
+
+<div class="row">
+    <div class="col-md-5">
+        @using (Html.BeginForm())
+        {
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @Html.TextBoxFor(model=>model.Email,new { @class="form-control", @Value = @User.Identity.Name, @readonly="true", @type="email" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.Email, new { @class="form-control", @type = "email" })
+                        }
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.Message, htmlAttributes: new { @class = "control-label" })
+                        <br />
+                        @Html.TextAreaFor(model => model.Message, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-7 col-md-offset-5">
+                        <button type="submit" class="btn btn-info btn-block">Send Email</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

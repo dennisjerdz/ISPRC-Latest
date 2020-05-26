@@ -12,6 +12,14 @@ namespace ISPRC.Models
      * Member; Register, Add Bird (supply band number)
     */
 
+    public class ContactModel
+    {
+        [Required]
+        public string Email { get; set; }
+        [Required]
+        public string Message { get; set; }
+    }
+
     public class JoinViewModel
     {
         public int RaceId { get; set; }

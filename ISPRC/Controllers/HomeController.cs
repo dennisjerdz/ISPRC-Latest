@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 
@@ -88,6 +89,39 @@ namespace ISPRC.Controllers
         {
             ViewBag.Message = "Your contact page.";
 
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Contact(ContactModel model) {
+            if (ModelState.IsValid) {
+                MailAddress fromAddress = new MailAddress("afs.capstone1@gmail.com", model.Email);
+                MailAddress toAddress = new MailAddress("afs.capstone1@gmail.com", "ISPRC ADMIN");
+                string fromPassword = "pokemon12390";
+                string subject = "ISPRC Inquiry - "+DateTime.UtcNow.AddHours(8).ToString("MM-dd-yy");
+
+                SmtpClient smtp = new SmtpClient()
+                {
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new System.Net.NetworkCredential(fromAddress.Address, fromPassword)
+                };
+
+                MailMessage message = new MailMessage(fromAddress, toAddress)
+                {
+                    Subject = subject,
+                    Body = model.Message
+                };
+                message.CC.Add(new MailAddress(model.Email));
+
+                smtp.Send(message);
+
+                ViewBag.Sent = "Message has been sent! Please wait for an admin to contact you or reply to your email.";
+            }
+            
             return View();
         }
     }
